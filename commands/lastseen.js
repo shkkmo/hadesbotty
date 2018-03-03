@@ -35,6 +35,10 @@ exports.run = async (client, message, args, level) => {
         errors += "Do you need a mirror ???\n";
       }
       members[targetID] = targetDB;
+    } else if (arg.trim() == 'all') {
+      members = guildDB.members;
+    } else {
+      errors += `I do not recognize the argument: ${arg}\n`;
     }
 
   });
