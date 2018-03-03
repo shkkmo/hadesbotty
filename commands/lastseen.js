@@ -5,6 +5,7 @@ exports.run = async (client, message, args, level) => {
   args = args.map(function(x){ return x.toLowerCase() });
   const moment = require("moment"),
         table = require('easy-table');
+  try {
   var hasData=false,
       scoreTable = new table,
       guildDB = message.guild,
@@ -56,7 +57,7 @@ exports.run = async (client, message, args, level) => {
   });  
   if (!scoreTable.rows.length) return message.reply(errors+"No data found");
   else return message.reply(`${errors}Last seen time for everyone of ${args.join(', ')}:\n` + "```" + scoreTable.sort('timestamp|des').toString()+"```"); 
-
+  } catch (error) { return message.reply(`${error}`); }
 };
                
 exports.conf = {
