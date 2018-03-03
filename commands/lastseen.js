@@ -9,7 +9,7 @@ exports.run = async (client, message, args, level) => {
   var hasData=false,
       scoreTable = new table,
       guildDB = message.guild,
-      members = [],
+      members = new Map(),
       errors = '';
 
   args.forEach(function(arg, argNum) {
@@ -40,7 +40,7 @@ exports.run = async (client, message, args, level) => {
       members[targetID] = targetDB;
     } else if (arg.trim() == 'all') {
       errors += `Showing all: ${arg}\n`; //Debug
-      members = guildDB.members.array();
+      members = guildDB.members;
     } else {
       errors += `I do not recognize the argument: ${arg}\n`;
     }
@@ -61,7 +61,7 @@ exports.run = async (client, message, args, level) => {
           scoreTable.cell('LocalTime', moment(Date.now() + (targetDB.timeOffset * 3600000)).format("MMM DD, HH:mm"));
         scoreTable.newRow();
       } else {
-        errors += `Haven't seen ${targetID}`;
+        errors += `Haven't seen ${targetID}\n`;
       }
     }
   });  
