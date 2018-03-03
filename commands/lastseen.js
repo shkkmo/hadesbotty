@@ -60,8 +60,8 @@ exports.run = async (client, message, args, level) => {
         let lastSeenString = timeDiff ? `${timeDiff} hours ago` : "just now...";
         //if(targetDB.timeOffset) lastSeen += " at "+moment(Date.now() + (targetDB.timeOffset * 3600000)).format("YY-MM-DD, HH:mm");
         scoreTable.cell('LastSeen', lastSeenString);
-        scoreTable.cell('TargetId', targetID);
-        scoreTable.cell('timestamp', targetDB.lastSeen); // Debug Show timestamp
+        //scoreTable.cell('TargetId', targetID); // Debug issues with nicknames
+        //scoreTable.cell('timestamp', targetDB.lastSeen); // Debug Show timestamp
         scoreTable.cell('', targetDB.lastSeen, function(){return '';}); //This empty col name and empty printer callback with will hide this column and give it zero width
         //if (targetDB.timeOffset)
         //  scoreTable.cell('LocalTime', moment(Date.now() + (targetDB.timeOffset * 3600000)).format("MMM DD, HH:mm"));
@@ -74,12 +74,11 @@ exports.run = async (client, message, args, level) => {
     }
   });  
   if (!scoreTable.rows.length) return message.reply(errors+"No data found");
-  else return message.reply(`${errors}Last seen time for everyone of ${args.join(', ')}:\n` + "```" + scoreTable.sort('timestamp|asc').toString()+"```"); // Is actually descending order, but library has comparison backwards
-//   else return message.reply(`Last seen time for everyone of ${args.join(', ')}:\n` + "```" + scoreTable.sort(function(a,b){
-//     var result = a[''] > b[''] ? -1 : 1;
-//     errors += `Comparing ${a['']} to ${b['']} got ${result} \n`;
-//     return result; //a[''] > b[''] ? 1 : -1;
-//   }).toString()+"```"+`\n${errors}`); 
+  //else return message.reply(`${errors}Last seen time for everyone of ${args.join(', ')}:\n` + "```" + scoreTable.sort('timestamp|asc').toString()+"```"); // Sort not working this way?
+  else return message.reply(`${errors}Last seen time for everyone of ${args.join(', ')}:\n` + "```" + scoreTable.sort(function(a,b){
+    //We can sort by our hidded timestamp value
+    return a[''] > b[''] ? -1 : 1;
+  }).toString()+"```"); 
   } catch (error) { return message.reply(`${error}`); }
 };
                
