@@ -12,13 +12,14 @@ exports.run = async (client, message, args, level) => {
       members = [],
       errors = '';
 
-  args.forEach(function(arg) {
+  args.forEach(function(arg, argNum) {
+    errors += `arg ${argNum}: ${arg}`; // Debug
     if (arg.indexOf("<@&") >= 0) { //target is a ROLE
       singleTarget = false;
       const roleID = arg.replace("<@&","").replace(">","");
       if (!message.guild.roles.has(roleID)) {
         errors += "Role not found! Maybe i can't mention it...\n";
-        return; //Skip to next member of args
+        return true; //Skip to next member of args
       }
       message.guild.roles.get(roleID).members.forEach(function(targetDB, targetID){
         members[targetID] = targetDB;
@@ -29,7 +30,7 @@ exports.run = async (client, message, args, level) => {
       var targetDB = client.userDB.get(targetID) || {username: targetID, lastSeen: false}
       if (!targetDB.lastSeen) {
         errors += `I have never seen ${targetDB.username}.\n`;
-        return; //Skip to next member of args
+        return true; //Skip to next member of args
       }
       if (message.author.id === targetID) {
         errors += "Do you need a mirror ???\n";
