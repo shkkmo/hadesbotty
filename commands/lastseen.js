@@ -58,7 +58,7 @@ exports.run = async (client, message, args, level) => {
         scoreTable.cell('User', targetDB.username);
         let lastSeenString = timeDiff ? `${timeDiff} hours ago` : "just now...";
         //if(targetDB.timeOffset) lastSeen += " at "+moment(Date.now() + (targetDB.timeOffset * 3600000)).format("YY-MM-DD, HH:mm");
-        scoreTable.cell('LastSeen', timeAgo);
+        scoreTable.cell('LastSeen', lastSeenString);
         scoreTable.cell('timestamp', targetDB.lastSeen, function(){return '';}) //This empty printer callback with will hide this column and give it zero width
         //if (targetDB.timeOffset)
         //  scoreTable.cell('LocalTime', moment(Date.now() + (targetDB.timeOffset * 3600000)).format("MMM DD, HH:mm"));
