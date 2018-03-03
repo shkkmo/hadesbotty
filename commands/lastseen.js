@@ -13,7 +13,7 @@ exports.run = async (client, message, args, level) => {
       errors = '';
 
   args.forEach(function(arg, argNum) {
-    errors += `arg ${argNum}: ${arg}\n`; // Debug
+    //errors += `arg ${argNum}: ${arg}\n`; // Debug
     if (arg.indexOf("<@&") >= 0) { //target is a ROLE
       singleTarget = false;
       const roleID = arg.replace("<@&","").replace(">","");
@@ -35,22 +35,23 @@ exports.run = async (client, message, args, level) => {
       if (message.author.id === targetID) {
         errors += "Do you need a mirror ???\n";
       } else {
-        errors += `Showing member: ${arg}\n`; //Debug
+        //errors += `Showing member: ${arg}\n`; //Debug
       }
       members.set(targetID, targetDB);
     } else if (arg.trim() == 'all') {
-      errors += `Showing all: ${arg}\n`; //Debug
+      //errors += `Showing all: ${arg}\n`; //Debug
       members = guildDB.members;
     } else {
       errors += `I do not recognize the argument: ${arg}\n`;
     }
 
   });
-  errors += `Map class is ${members.constructor.name}\n`; //Debug
-  errors += `Map has is ${members.size}\n`; //Debug
+  
+  //errors += `Map class is ${members.constructor.name}\n`; //Debug
+  //errors += `Map has is ${members.size}\n`; //Debug
 
   members.forEach(function (targetDB, targetID, mapObj){
-    errors += `Iterating target : ${targetID}\n`; //Debug
+    //errors += `Iterating target : ${targetID}\n`; //Debug
     if (targetID != process.env.DISCORD_BOT_ID) {
       targetDB = client.userDB.get(targetID) || targetDB || {lastSeen: false}
       if (targetDB.lastSeen) {
@@ -60,19 +61,19 @@ exports.run = async (client, message, args, level) => {
         //if(targetDB.timeOffset) lastSeen += " at "+moment(Date.now() + (targetDB.timeOffset * 3600000)).format("YY-MM-DD, HH:mm");
         scoreTable.cell('LastSeen', lastSeenString);
         scoreTable.cell('TargetId', targetID);
-        scoreTable.cell('timestamp', targetDB.lastSeen, function(){return '';}) //This empty printer callback with will hide this column and give it zero width
+        scoreTable.cell('', targetDB.lastSeen, function(){return '';}) //This empty col name and empty printer callback with will hide this column and give it zero width
         //if (targetDB.timeOffset)
         //  scoreTable.cell('LocalTime', moment(Date.now() + (targetDB.timeOffset * 3600000)).format("MMM DD, HH:mm"));
         scoreTable.newRow();
       } else {
-        errors += `Haven't seen: ${targetID}\n`; //Debug
+        //errors += `Haven't seen: ${targetID}\n`; //Debug
       }
     } else {
-      errors += `Skipping this bot: ${targetID}\n`; //Debug
+      //errors += `Skipping this bot: ${targetID}\n`; //Debug
     }
   });  
   if (!scoreTable.rows.length) return message.reply(errors+"No data found");
-  else return message.reply(`${errors}Last seen time for everyone of ${args.join(', ')}:\n` + "```" + scoreTable.sort('timestamp|des').toString()+"```"); 
+  else return message.reply(`${errors}Last seen time for everyone of ${args.join(', ')}:\n` + "```" + scoreTable.sort('|des').toString()+"```"); 
   } catch (error) { return message.reply(`${error}`); }
 };
                
