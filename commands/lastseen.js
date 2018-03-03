@@ -57,12 +57,14 @@ exports.run = async (client, message, args, level) => {
         //if(targetDB.timeOffset) lastSeen += " at "+moment(Date.now() + (targetDB.timeOffset * 3600000)).format("YY-MM-DD, HH:mm");
         scoreTable.cell('LastSeen', timeAgo);
         scoreTable.cell('timestamp', targetDB.lastSeen, function(){return '';}) //This empty printer callback with will hide this column and give it zero width
-        if (targetDB.timeOffset)
-          scoreTable.cell('LocalTime', moment(Date.now() + (targetDB.timeOffset * 3600000)).format("MMM DD, HH:mm"));
+        //if (targetDB.timeOffset)
+        //  scoreTable.cell('LocalTime', moment(Date.now() + (targetDB.timeOffset * 3600000)).format("MMM DD, HH:mm"));
         scoreTable.newRow();
       } else {
-        errors += `Haven't seen ${targetID}\n`;
+        errors += `Haven't seen: ${targetID}\n`; //Debug
       }
+    } else {
+      errors += `Skipping this bot: ${targetID}\n`; //Debug
     }
   });  
   if (!scoreTable.rows.length) return message.reply(errors+"No data found");
