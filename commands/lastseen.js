@@ -26,7 +26,7 @@ exports.run = async (client, message, args, level) => {
       });
     }
     else if (arg.indexOf("<@") >= 0 ) { //target is a USER
-      var targetID = arg.replace("<@","").replace(">","");
+      var targetID = arg.replace("<@","").replace(">","").replace("!","");
       var targetDB = client.userDB.get(targetID) || {username: targetID, lastSeen: false}
       if (!targetDB.lastSeen) {
         errors += `I have never seen ${targetDB.username}.\n`;
