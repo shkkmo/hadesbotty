@@ -39,7 +39,7 @@ exports.run = async (client, message, args, level) => {
 
   });
 
-  searchObj.members.forEach(function (targetDB, targetID, mapObj){
+  members.forEach(function (targetDB, targetID, mapObj){
     if (targetID != process.env.DISCORD_BOT_ID) {
       targetDB = client.userDB.get(targetID) || {lastSeen: false}
       if (targetDB.lastSeen) {
