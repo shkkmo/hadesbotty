@@ -46,6 +46,8 @@ exports.run = async (client, message, args, level) => {
     }
 
   });
+  errors += `Map class is ${members.contructor.name}`; //Debug
+  errors += `Map has is ${members.size}`; //Debug
 
   members.forEach(function (targetDB, targetID, mapObj){
     errors += `Iterating target : ${targetID}\n`; //Debug
