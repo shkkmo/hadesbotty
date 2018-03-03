@@ -48,6 +48,7 @@ exports.run = async (client, message, args, level) => {
   });
 
   members.forEach(function (targetDB, targetID, mapObj){
+    errors += `Iterating target : ${targetID}\n`; //Debug
     if (targetID != process.env.DISCORD_BOT_ID) {
       targetDB = client.userDB.get(targetID) || targetDB || {lastSeen: false}
       if (targetDB.lastSeen) {
