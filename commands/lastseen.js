@@ -13,7 +13,7 @@ exports.run = async (client, message, args, level) => {
       errors = '';
 
   args.forEach(function(arg, argNum) {
-    errors += `arg ${argNum}: ${arg}`; // Debug
+    errors += `arg ${argNum}: ${arg}\n`; // Debug
     if (arg.indexOf("<@&") >= 0) { //target is a ROLE
       singleTarget = false;
       const roleID = arg.replace("<@&","").replace(">","");
@@ -34,9 +34,12 @@ exports.run = async (client, message, args, level) => {
       }
       if (message.author.id === targetID) {
         errors += "Do you need a mirror ???\n";
+      } else {
+        errors += `Showing member: ${arg}\n`; //Debug
       }
       members[targetID] = targetDB;
     } else if (arg.trim() == 'all') {
+      errors += `Showing all: ${arg}\n`; //Debug
       members = guildDB.members;
     } else {
       errors += `I do not recognize the argument: ${arg}\n`;
