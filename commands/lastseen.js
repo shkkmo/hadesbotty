@@ -74,7 +74,10 @@ exports.run = async (client, message, args, level) => {
     }
   });  
   if (!scoreTable.rows.length) return message.reply(errors+"No data found");
-  else return message.reply(`${errors}Last seen time for everyone of ${args.join(', ')}:\n` + "```" + scoreTable.sort('timestamp|des').toString()+"```"); 
+  //else return message.reply(`${errors}Last seen time for everyone of ${args.join(', ')}:\n` + "```" + scoreTable.sort('timestamp|des').toString()+"```"); 
+  else return message.reply(`${errors}Last seen time for everyone of ${args.join(', ')}:\n` + "```" + scoreTable.sort(function(a,b){
+    return a[''] > b[''] ? 1 : -1;
+  }).toString()+"```"); 
   } catch (error) { return message.reply(`${error}`); }
 };
                
