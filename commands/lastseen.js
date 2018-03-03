@@ -22,7 +22,7 @@ exports.run = async (client, message, args, level) => {
         return true; //Skip to next member of args
       }
       message.guild.roles.get(roleID).members.forEach(function(targetDB, targetID){
-        members[targetID] = targetDB;
+        members.set(targetID, targetDB);
       });
     }
     else if (arg.indexOf("<@") >= 0 ) { //target is a USER
@@ -37,7 +37,7 @@ exports.run = async (client, message, args, level) => {
       } else {
         errors += `Showing member: ${arg}\n`; //Debug
       }
-      members[targetID] = targetDB;
+      members.set(targetID, targetDB);
     } else if (arg.trim() == 'all') {
       errors += `Showing all: ${arg}\n`; //Debug
       members = guildDB.members;
