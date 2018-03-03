@@ -40,7 +40,7 @@ exports.run = async (client, message, args, level) => {
       members[targetID] = targetDB;
     } else if (arg.trim() == 'all') {
       errors += `Showing all: ${arg}\n`; //Debug
-      members = guildDB.members;
+      members = guildDB.members.array();
     } else {
       errors += `I do not recognize the argument: ${arg}\n`;
     }
@@ -49,7 +49,7 @@ exports.run = async (client, message, args, level) => {
 
   members.forEach(function (targetDB, targetID, mapObj){
     if (targetID != process.env.DISCORD_BOT_ID) {
-      targetDB = client.userDB.get(targetID) || {lastSeen: false}
+      targetDB = client.userDB.get(targetID) || targetDB || {lastSeen: false}
       if (targetDB.lastSeen) {
         let timeDiff = Math.round((Date.now() - targetDB.lastSeen) / 360000) / 10; //One 10 outside the round() call so we have a single decimal
         scoreTable.cell('User', targetDB.username);
@@ -60,6 +60,8 @@ exports.run = async (client, message, args, level) => {
         if (targetDB.timeOffset)
           scoreTable.cell('LocalTime', moment(Date.now() + (targetDB.timeOffset * 3600000)).format("MMM DD, HH:mm"));
         scoreTable.newRow();
+      } else {
+        errors += `Haven't seen ${targetID}`;
       }
     }
   });  
