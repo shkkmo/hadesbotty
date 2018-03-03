@@ -61,7 +61,8 @@ exports.run = async (client, message, args, level) => {
         //if(targetDB.timeOffset) lastSeen += " at "+moment(Date.now() + (targetDB.timeOffset * 3600000)).format("YY-MM-DD, HH:mm");
         scoreTable.cell('LastSeen', lastSeenString);
         scoreTable.cell('TargetId', targetID);
-        scoreTable.cell('', targetDB.lastSeen, function(){return '';}) //This empty col name and empty printer callback with will hide this column and give it zero width
+        scoreTable.cell('timestamp', targetDB.lastSeen); // Debug Show timestamp
+        scoreTable.cell('', targetDB.lastSeen, function(){return '';}); //This empty col name and empty printer callback with will hide this column and give it zero width
         //if (targetDB.timeOffset)
         //  scoreTable.cell('LocalTime', moment(Date.now() + (targetDB.timeOffset * 3600000)).format("MMM DD, HH:mm"));
         scoreTable.newRow();
