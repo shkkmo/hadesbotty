@@ -114,12 +114,12 @@ exports.run = async (client, message, args, level) => {
       
       techMap.forEach( (techLabel, techID) => {
         if (!currentTable || reportTables.has(techID)) { //need to switch to a new table for this report
-          let nextVal = reportTableIterator.next().value;
+          let nextVal = reportTableIterator.next();
           if (nextVal.done) {
             return errors += "Expected end to reportTables iteration\n";
           }
           currentTable = nextVal.value;
-          //currentTable.cell('name',targetDB.username, val => String(val).substr(0,13));//Math.min(13,String(val).length);
+          currentTable.cell('name',targetDB.username, val => String(val).substr(0,13));//Math.min(13,String(val).length);
         }
         //errors += `Processing ${techID} for memberID ${targetID}\n`; // Debug
         let techLevel = Number( allTech[techID] ) || 0;
@@ -128,7 +128,7 @@ exports.run = async (client, message, args, level) => {
         } else {
           errors += `Invalid techID ${techID}\n`;
         }
-        //currentTable.cell(techLabel, techLevel);
+        currentTable.cell(techLabel, techLevel);
       });// End techMap.forEach
       reportTables.forEach( (currentTable) => { 
         currentTable.cell('score', techScore); 
