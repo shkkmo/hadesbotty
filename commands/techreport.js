@@ -5,6 +5,7 @@ exports.run = async (client, message, args, level) => {
 
   args = args.map(x => x.toLowerCase());
   const table = require('easy-table');
+  try {
   var hasData=false,
       $errors = '';
       members = new Map(),
@@ -92,7 +93,7 @@ exports.run = async (client, message, args, level) => {
       .join("``` \n ```") // put each report in it's own code block                 
     + "```"
   }`);
-    
+  } catch (error) { return message.reply(`${error}`); } 
 };
 
 exports.conf = {
