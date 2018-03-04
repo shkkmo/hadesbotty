@@ -93,7 +93,11 @@ exports.run = async (client, message, args, level) => {
       techMap.forEach( (techID, techLabel) => {
         errors += `Processing ${techID} for memberID ${targetID}\n`; // Debug
         let techLevel = Number( allTech[techID] ) || 0;
-        techScore += client.config.hadesTech[techID].levels[techLevel - 1] || 0;
+        if (client.config.hadesTech[techID]) {
+          techScore += client.config.hadesTech[techID].levels[techLevel - 1] || 0;
+        } else {
+          errors += `Invalid techID ${techID}\n`;
+        }
         report.cell(techLabel, techLevel);
       });
       report.cell('score', techScore);
