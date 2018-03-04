@@ -151,7 +151,7 @@ exports.run = async (client, message, args, level) => {
   if (reports.length < 1) {
     return message.reply(`${errors}No data found.`);
   } else { 
-    var discordCharLimit = 1800;
+    var discordCharLimit = 1000;
     message.reply(`Tech Reports:\n${errors}`);
     let reportsContent = reports
       .map( reportTables  =>  //get the report texts
