@@ -62,6 +62,7 @@ exports.run = async (client, message, args, level) => {
       } else if (arg.trim() == 'all') {
         //errors += `Showing all: ${arg}\n`; //Debug
         message.guild.members.forEach(function(targetDB, targetID){
+          targetDB = client.userDB.get(targetID);
           members.set(targetID, targetDB);
         });
       } else {
@@ -90,7 +91,7 @@ exports.run = async (client, message, args, level) => {
 //       if (!allTech)   return errors += client.hsTech.map( (val, key) => {
 //         return `Id ${targetID} doesn't match ${key}\n`; // Debug
 //       }).join('');
-      if (!allTech)   return errors += `No tech found for user ${targetID}\n`; // Debug
+      if (!allTech)   return;// errors += `No tech found for user ${targetID}\n`; // Debug
       if (!targetDB)  return errors += `No record found for user ${targetID}\n`; // Debug
       //errors += `Processing memberID ${targetID}\n`; // Debug
       let techScore = 0;
