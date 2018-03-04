@@ -65,21 +65,29 @@ exports.run = async (client, message, args, level) => {
       errors += `Invalid argument section: ${argSection}\n`;
     }
   });
+    
+  if (members.size < 1) {
+    errors += `Unable to find any matching users\n`;
+    
+  }
+    
+  if (techLists.length < 1 || techLists[0].size < 1) {
+    errors += `Unable to find any matching technologies\n`;
+  }
   
   techLists.forEach( (techMap, techIndex) => {
     let report = new table;
-    errors += `Processing techlist number ${techIndex}\n`;
+    errors += `Processing techlist number ${techIndex}\n`; // Debug
     members.forEach( (targetDB, targetID) => {
       
       let allTech = client.hsTech.get(targetID);
       if (!allTech || !targetDB) return;
-      
-      errors += `Processing memberID ${targetID}\n`;
+      errors += `Processing memberID ${targetID}\n`; // Debug
       let techScore = 0;
       report.cell('name',targetDB.username);
       
       techMap.forEach( (techID, techLabel) => {
-        errors += `Processing ${techID} for memberID ${targetID}\n`;
+        errors += `Processing ${techID} for memberID ${targetID}\n`; // Debug
         let techLevel = Number( allTech[techID] ) || 0;
         techScore += client.config.hadesTech[techID].levels[techLevel - 1] || 0;
         report.cell(techLabel, techLevel);
@@ -87,8 +95,12 @@ exports.run = async (client, message, args, level) => {
       report.cell('score', techScore);
       report.newRow();
     });
-    reportTables[reportTables.length] = report;
-    errors += `Added report table number ${reportTables.length} with  ${reportTables[reportTables.length - 1].rows.length} rows \n`;
+    if (report.rows.length < 1) {
+      errors += `Empty report, skipping\n`; // Debug
+    } else {
+      reportTables[reportTables.length] = report;
+      errors += `Added report table number ${reportTables.length} with  ${reportTables[reportTables.length - 1].rows.length} rows \n`; // Debug
+    }
   });
 
   if (!hasData) return message.reply("No data found.");
@@ -99,7 +111,7 @@ exports.run = async (client, message, args, level) => {
       .join("``` \n ```") // put each report in it's own code block                 
     + "```"
   }`);
-  } catch (error) { return message.reply(`${error}`); } 
+  } catch (error) { return message.reply(`There was an error: ${error}`); } 
 };
 
 exports.conf = {
