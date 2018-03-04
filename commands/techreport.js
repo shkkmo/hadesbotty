@@ -144,7 +144,7 @@ exports.run = async (client, message, args, level) => {
     } else {
       //if (!reports) errors += "breakpoint 3";
       reports[reports.length] = reportTables;
-      errors += `Added report  number ${reports.length} with  ${reports[reports.length - 1].size} tables\n`; // Debug
+      //errors += `Added report  number ${reports.length} with  ${reports[reports.length - 1].size} tables\n`; // Debug
     }
   });//end techLists.forEach
 
@@ -190,19 +190,6 @@ exports.run = async (client, message, args, level) => {
       }
     });
   }
-//   } else { 
-//     let reportsContent = "```"
-//     + reports
-//       .map( reportTables  =>  //get the report texts
-//          Array.from(reportTables.values())  //print all tables for report
-//            .map( table => table.rows.length ? table.sort('score|des').toString() : '' )
-//            .join("\n")
-//       )
-//       .filter( output => output != '') // remove empty reports
-//       .join("``` \n ```") // put each report in it's own code block                 
-//       + "```";
-//     return message.reply(`Tech Reports:\n${errors}${reportsContent}`);
-//   }
   } catch (error) { return message.reply(`There was an error: ${error}\n${errors}`); } 
 };
 
