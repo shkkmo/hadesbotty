@@ -87,7 +87,7 @@ exports.run = async (client, message, args, level) => {
     var headerWidth = 0;
     var reportTables = new Map();
     techMap.forEach( (techLabel, techID) => {
-      if (!techLabel) errors += "breakpoint 1";
+      //if (!techLabel) errors += "breakpoint 1";
       let colWidth = techLabel.length + (headerWidth > 0 ? 2 : 0);
       if (headerWidth + colWidth > 40) { // 2 is the spacing between cols and 50 is max width 60 minus score column (7) and name column (13)
         reportTables.set(techID, new table); // Add a map entry with the first techID that doesn't fit in this report
@@ -136,13 +136,13 @@ exports.run = async (client, message, args, level) => {
         currentTable.newRow();
       });// End reportTables.forEach
     });// End members.forEach
-    if ( 0 == Array.from(reportTables.entries()).reduce((total, value) => { 
-        if (!value.rows) errors += "breakpoint 2";
+    if ( 0 == Array.from(reportTables.values()).reduce((total, value) => { 
+        //if (!value.rows) errors += "breakpoint 2";
         return total + value.rows.length;
     }, 0) ) {
       errors += `Empty report, skipping\n`; // Debug
     } else {
-      if (!reports) errors += "breakpoint 3";
+      //if (!reports) errors += "breakpoint 3";
       reports[reports.length] = reportTables;
       errors += `Added report  number ${reports.length} with  ${reports[reports.length - 1].size} tables\n`; // Debug
     }
