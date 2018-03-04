@@ -148,7 +148,7 @@ exports.run = async (client, message, args, level) => {
     }
   });//end techLists.forEach
 
-  if (reportTables.length < 1) {
+  if (reports.length < 1) {
     return message.reply(`${errors}No data found.`);
   } else { 
     let reportsContent = "```"
