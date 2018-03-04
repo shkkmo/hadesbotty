@@ -151,7 +151,7 @@ exports.run = async (client, message, args, level) => {
   if (reports.length < 1) {
     return message.reply(`${errors}No data found.`);
   } else { 
-    var discordCharLimit = 1000;
+    var discordCharLimit = 1500;
     message.reply(`Tech Reports:\n${errors}`);
     let reportsContent = reports
       .map( reportTables  =>  //get the report texts
@@ -180,7 +180,7 @@ exports.run = async (client, message, args, level) => {
             }
             currentReportPart++;
             currentMessageContent = "**Report: "+reportIndex
-              + " Part: "+reportTableIndex+ "**\n"
+              + " Part: "+currentReportPart+ "**\n"
               + tableContent;
           } else {
             currentMessageContent += "\n" + tableContent;
