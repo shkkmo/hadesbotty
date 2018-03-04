@@ -15,12 +15,12 @@ exports.run = async (client, message, args, level) => {
   args.forEach(function(arg) {
     if ('|' == arg.trim()) {
       argSection = 'techIDs';
-      techLists[techLists.length] = new Map(); //Initialize a new tech list
+      techLists[] = new Map(); //Initialize a new tech list
     } else if ('techIds' == argSection) {
       //errors += client.ParseTechArg(arg, techLists[techLists.length], client.config.hadesTech); 
       let techID = client.normalizeTechName(arg);
       if (client.config.hadesTech[techID]) {
-        techLists[techLists.length].set(techID, arg); // add a tech plus the arg as a label for our table
+        techLists[techLists.length - 1].set(techID, arg); // add a tech plus the arg as a label for our table
       } else {
         errors += `Cannot find tech to match ${arg}\n`;
       }
@@ -81,17 +81,17 @@ exports.run = async (client, message, args, level) => {
       report.cell('score', techScore);
       report.newRow();
     });
-    reportTables[reportTables.length] = report;
+    reportTables[] = report;
   });
 
-//   if (!hasData) return message.reply("No data found.");
-// //   else return message.reply(`Tech Reports:${errors}\n${"```"}${
-// //     reportTables
-// //       .map( report  => report.rows.length ? report.sort('score|des').toString() : '' ) //get the report texts
-// //       .filter(ouput => output != '') // remove empty reports
-// //       .join("``` \n ```") // put each report in it's own code block                 
-// //     + "```"
-// //   }`);
+  if (!hasData) return message.reply("No data found.");
+  else return message.reply(`Tech Reports:${errors}\n${"```"}${
+    reportTables
+      .map( report  => report.rows.length ? report.sort('score|des').toString() : '' ) //get the report texts
+      .filter(ouput => output != '') // remove empty reports
+      .join("``` \n ```") // put each report in it's own code block                 
+    + "```"
+  }`);
     
 };
 
