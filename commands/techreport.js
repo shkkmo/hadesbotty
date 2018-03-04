@@ -103,7 +103,7 @@ exports.run = async (client, message, args, level) => {
     }
   });
 
-  if (!hasData) return message.reply("No data found.");
+  if (reportTables.length < 1) return message.reply(`${errors}No data found.`);
   else return message.reply(`Tech Reports:${errors}\n${"```"}${
     reportTables
       .map( report  => report.rows.length ? report.sort('score|des').toString() : '' ) //get the report texts
