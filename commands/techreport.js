@@ -149,7 +149,7 @@ exports.run = async (client, message, args, level) => {
     let reportsContent = "```"
     + reports
       .map( reportTables  =>  //get the report texts
-         Array.from(reportTables.entries())  //print all tables for report
+         Array.from(reportTables.values())  //print all tables for report
            .map( table => table.rows.length ? table.sort('score|des').toString() : '' )
            .join("\n")
       )
@@ -158,7 +158,7 @@ exports.run = async (client, message, args, level) => {
       + "```";
     return message.reply(`Tech Reports:\n${errors}${reportsContent}`);
   }
-  } catch (error) { return message.reply(`There was an error: ${error.trace}\n${errors}`); } 
+  } catch (error) { return message.reply(`There was an error: ${error}\n${errors}`); } 
 };
 
 exports.conf = {
