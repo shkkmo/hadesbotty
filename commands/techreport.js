@@ -90,7 +90,7 @@ exports.run = async (client, message, args, level) => {
       let techScore = 0;
       report.cell('name',targetDB.username);
       
-      techMap.forEach( (techID, techLabel) => {
+      techMap.forEach( (techLabel, techID) => {
         errors += `Processing ${techID} for memberID ${targetID}\n`; // Debug
         let techLevel = Number( allTech[techID] ) || 0;
         if (client.config.hadesTech[techID]) {
