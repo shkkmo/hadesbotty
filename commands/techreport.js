@@ -87,15 +87,15 @@ exports.run = async (client, message, args, level) => {
     //errors += `Processing techlist number ${techMapIndex}\n`; // Debug
     var headerWidth = 0;
     var reportTables = new Map();
-    techMap.forEach( (techLabel, techID) => {
-      let colWidth = techLabel.length + (headerWidth > 0 ? 2 : 0);
-      if (headerWidth + colWidth > 40) { // 2 is the spacing between cols and 50 is max width 60 minus score column (7) and name column (13)
-        reportTables.add(techID, new table); // Add a map entry with the first techID that doesn't fit in this report
-        headerWidth = techLabel.length; // Set headerwidth for next report table to the label for the first tech
-      } else {
-        headerWidth += colWidth;
-      }
-    })
+//     techMap.forEach( (techLabel, techID) => {
+//       let colWidth = techLabel.length + (headerWidth > 0 ? 2 : 0);
+//       if (headerWidth + colWidth > 40) { // 2 is the spacing between cols and 50 is max width 60 minus score column (7) and name column (13)
+//         reportTables.add(techID, new table); // Add a map entry with the first techID that doesn't fit in this report
+//         headerWidth = techLabel.length; // Set headerwidth for next report table to the label for the first tech
+//       } else {
+//         headerWidth += colWidth;
+//       }
+//     })
     reportTables.add('', new table);// Add the last table, it has not techID that won't fit
     
     members.forEach( (targetDB, targetID) => {
