@@ -24,7 +24,7 @@ exports.run = async (client, message, args, level) => {
       if (client.config.hadesTech[techID]) {
         techLists[techLists.length - 1].set(techID, arg); // add a tech plus the arg as a label for our table
       } else if (client.config.hadesTechSize[techID]) {
-        client.config.hadesTech.forEach((techValue, techKey) => {
+        Object.keys(client.config.hadesTech).forEach(techKey => {
           if (client.config.hadesTech[techKey].group == techID) {
             techLists[techLists.length - 1].set(techKey, techKey); // add all techs from group
           }
