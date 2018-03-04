@@ -151,18 +151,37 @@ exports.run = async (client, message, args, level) => {
   if (reports.length < 1) {
     return message.reply(`${errors}No data found.`);
   } else { 
-    let reportsContent = "```"
-    + reports
+    message.reply(`Tech Reports:\n${errors}${reportsContent}`);
+    let reportsContent = reports
       .map( reportTables  =>  //get the report texts
          Array.from(reportTables.values())  //print all tables for report
            .map( table => table.rows.length ? table.sort('score|des').toString() : '' )
-           .join("\n")
-      )
-      .filter( output => output != '') // remove empty reports
-      .join("``` \n ```") // put each report in it's own code block                 
-      + "```";
-    return message.reply(`Tech Reports:\n${errors}${reportsContent}`);
+      );
+    reportsContent.forEach((reportTables, reportIndex) => {
+      let reportContent = "**Report "+reportIndex+"***\n```" + reportTables.join("/n") + "```" ;
+      if (reportContent.length < 2000) {
+        message.reply(reportContent);
+      } else {
+        reportTables.forEach((reportTable, reportTableIndex) => {
+          let tableContent =  "**Report: "+reportIndex+" Part: ".reportTableIndex."***\n```" + reportTables.join("/n") + "```" ;
+          message.reply(tableContent);
+        });
+      }
+    });
   }
+//   } else { 
+//     let reportsContent = "```"
+//     + reports
+//       .map( reportTables  =>  //get the report texts
+//          Array.from(reportTables.values())  //print all tables for report
+//            .map( table => table.rows.length ? table.sort('score|des').toString() : '' )
+//            .join("\n")
+//       )
+//       .filter( output => output != '') // remove empty reports
+//       .join("``` \n ```") // put each report in it's own code block                 
+//       + "```";
+//     return message.reply(`Tech Reports:\n${errors}${reportsContent}`);
+//   }
   } catch (error) { return message.reply(`There was an error: ${error}\n${errors}`); } 
 };
 
