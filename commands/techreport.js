@@ -163,7 +163,7 @@ exports.run = async (client, message, args, level) => {
         message.reply(reportContent);
       } else {
         reportTables.forEach((reportTable, reportTableIndex) => {
-          let tableContent =  "**Report: "+reportIndex+" Part: ".reportTableIndex."***\n```" + reportTables.join("/n") + "```" ;
+          let tableContent =  "**Report: "+reportIndex+" Part: "+reportTableIndex+ "***\n```"+ reportTables.join("/n") +"```" ;
           message.reply(tableContent);
         });
       }
