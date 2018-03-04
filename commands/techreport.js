@@ -81,6 +81,9 @@ exports.run = async (client, message, args, level) => {
     
     members.forEach( (targetDB, targetID) => {
       let allTech = client.hsTech.get(targetID) || client.hsTech.get('!'+targetID);
+      if (!allTech)   return errors += client.hsTech.map( (val, key) => {
+        return `Id ${targetID} doesn't match ${key}\n`; // Debug
+      }).join('');
       if (!allTech)   return errors += `No tech found for user ${targetID}\n`; // Debug
       if (!targetDB)  return errors += `No record found for user ${targetID}\n`; // Debug
       errors += `Processing memberID ${targetID}\n`; // Debug
