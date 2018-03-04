@@ -9,7 +9,7 @@ exports.run = async (client, message, args, level) => {
   var hasData=false,
       errors = '';
       members = new Map(),
-      reportTables = new Array(),
+      reports = new Array(),
       techLists = new Array(),
       argSection = 'users';
     
@@ -30,7 +30,7 @@ exports.run = async (client, message, args, level) => {
           }
         });
       } else {
-        errors += `Cannot find tech to match ${arg}\n`;
+        errors += `Cannot find tech or techgroup to match ${arg}\n`;
       }
     } else if ('users' == argSection) {
       //TODO refactor this to use a common member parsing script
@@ -82,11 +82,24 @@ exports.run = async (client, message, args, level) => {
     errors += `Unable to find any matching technologies\n`;
   }
   
-  techLists.forEach( (techMap, techIndex) => {
-    let report = new table;
-    //errors += `Processing techlist number ${techIndex}\n`; // Debug
+  techLists.forEach( (techMap, techMapIndex) => {
+    
+    //errors += `Processing techlist number ${techMapIndex}\n`; // Debug
+    var headerWidth = 0;
+    var reportTables = new Map();
+    techMap.forEach( (techLabel, techID) => {
+      let colWidth = techLabel.length + (headerWidth > 0 ? 2 : 0);
+      if (headerWidth + colWidth > 40) { // 2 is the spacing between cols and 50 is max width 60 minus score column (7) and name column (13)
+        reportTables.add(techID, new table); // Add a map entry with the first techID that doesn't fit in this report
+        headerWidth = techLabel.length; // Set headerwidth for next report table to the label for the first tech
+      } else {
+        headerWidth += colWidth;
+      }
+    })
+    reportTables.add('', new table);// Add the last table, it has not techID that won't fit
     
     members.forEach( (targetDB, targetID) => {
+      
       let allTech = client.hsTech.get(targetID) || client.hsTech.get('!'+targetID);
 //       if (!allTech)   return errors += client.hsTech.map( (val, key) => {
 //         return `Id ${targetID} doesn't match ${key}\n`; // Debug
@@ -95,9 +108,17 @@ exports.run = async (client, message, args, level) => {
       if (!targetDB)  return errors += `No record found for user ${targetID}\n`; // Debug
       //errors += `Processing memberID ${targetID}\n`; // Debug
       let techScore = 0;
-      report.cell('name',targetDB.username);
+      currentTable.cell('name',targetDB.username);
+      
+      // Start iterating through this report's tables for this user
+      let reportTableIterator = reportTable[Symbol.iterator];
+      let currentTable = false;
       
       techMap.forEach( (techLabel, techID) => {
+        if (!currentTable || reportTables.has(techID)) { //need to switch to  move o
+          currentTable = reportTableIterator.next().value; //We could check for doneness, but that should happen...
+          currentTable.cell('name',targetDB.username, val => String(val).substr(0,13));//Math.min(13,String(val).length);
+        }
         //errors += `Processing ${techID} for memberID ${targetID}\n`; // Debug
         let techLevel = Number( allTech[techID] ) || 0;
         if (client.config.hadesTech[techID]) {
@@ -105,23 +126,29 @@ exports.run = async (client, message, args, level) => {
         } else {
           errors += `Invalid techID ${techID}\n`;
         }
-        report.cell(techLabel, techLevel);
+        currentTable.cell(techLabel, techLevel);
       });
-      report.cell('score', techScore);
-      report.newRow();
+      reportTables.forEach( (currentTable, index) => { 
+        currentTable.cell('score', techScore); 
+        currentTable.newRow();
+      } );
     });
-    if (report.rows.length < 1) {
-      //errors += `Empty report, skipping\n`; // Debug
+    if ( 0 <= Array.from(reportTables.entries()).reduce( (total, value) => {total + } < 1) { return total + value.rows.length }, 0 )) {
+      errors += `Empty report, skipping\n`; // Debug
     } else {
-      reportTables[reportTables.length] = report;
-      //errors += `Added report table number ${reportTables.length} with  ${reportTables[reportTables.length - 1].rows.length} rows \n`; // Debug
+      reports[reports.length] = reportTables;
+      errors += `Added report  number ${reports.length} with  ${reports[reports.length - 1].size} tables \n`; // Debug
     }
   });
 
   if (reportTables.length < 1) return message.reply(`${errors}No data found.`);
   else return message.reply(`Tech Reports:\n${errors}${"```"}${
-    reportTables
-      .map( report  => report.rows.length ? report.sort('score|des').toString() : '' ) //get the report texts
+    reports
+      .map( reportTables  =>  //get the report texts
+         Array.from(reportTables.entries())  //print all tables for report
+           .map( table => table.rows.length ? table.sort('score|des').toString() : '' )
+           .join("\n")
+      )
       .filter( output => output != '') // remove empty reports
       .join("``` \n ```") // put each report in it's own code block                 
     + "```"
