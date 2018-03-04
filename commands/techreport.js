@@ -15,7 +15,7 @@ exports.run = async (client, message, args, level) => {
   args.forEach(function(arg) {
     if ('|' == arg.trim()) {
       argSection = 'techIDs';
-      techLists[] = new Map(); //Initialize a new tech list
+      techLists[techLists.length] = new Map(); //Initialize a new tech list
     } else if ('techIds' == argSection) {
       //errors += client.ParseTechArg(arg, techLists[techLists.length], client.config.hadesTech); 
       let techID = client.normalizeTechName(arg);
@@ -81,7 +81,7 @@ exports.run = async (client, message, args, level) => {
       report.cell('score', techScore);
       report.newRow();
     });
-    reportTables[] = report;
+    reportTables[reportTables.length] = report;
   });
 
   if (!hasData) return message.reply("No data found.");
