@@ -3,14 +3,14 @@
 
 exports.run = async (client, message, args, level) => { 
 
-//   args = args.map(x => x.toLowerCase());
-//   const table = require('easy-table');
-//   var hasData=false,
-//       $errors = '';
-//       members = new Map(),
-//       reportTables = new Array(),
-//       techLists = new Array(),
-//       argSection = 'users';
+  args = args.map(x => x.toLowerCase());
+  const table = require('easy-table');
+  var hasData=false,
+      $errors = '';
+      members = new Map(),
+      reportTables = new Array(),
+      techLists = new Array(),
+      argSection = 'users';
     
 //   args.forEach(function(arg) {
 //     if ('|' == arg.trim()) {
