@@ -151,6 +151,7 @@ exports.run = async (client, message, args, level) => {
   if (reports.length < 1) {
     return message.reply(`${errors}No data found.`);
   } else { 
+    var discordCharLimit = 1000;
     message.reply(`Tech Reports:\n${errors}`);
     let reportsContent = reports
       .map( reportTables  =>  //get the report texts
@@ -159,15 +160,15 @@ exports.run = async (client, message, args, level) => {
       );
     reportsContent.forEach((reportTables, reportIndex) => {
       let reportContent = "**Report "+reportIndex+"**\n```" + reportTables.join("\n") + "```" ;
-      if (reportContent.length < 2000) {
+      if (reportContent.length < discordCharLimit) {
         message.reply(reportContent);
       } else {
         reportTables.forEach((reportTable, reportTableIndex) => {
           let tableContent =  "**Report: "+reportIndex+" Part: "+reportTableIndex+ "***\n```"+ reportTables.join("\n") +"```" ;
-          if (tableContent < 2000) {
+          if (tableContent < discordCharLimit) {
             message.reply(tableContent);
           } else {
-            message.reply(tableContent.substr(0,1970) + "...(too long, trucated)");
+            message.reply(tableContent.substr(0,discordCharLimit - 20) + "...(too long, trucated)");
           }
         });
       }
