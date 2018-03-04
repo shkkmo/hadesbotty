@@ -23,6 +23,12 @@ exports.run = async (client, message, args, level) => {
       let techID = client.normalizeTechName(arg);
       if (client.config.hadesTech[techID]) {
         techLists[techLists.length - 1].set(techID, arg); // add a tech plus the arg as a label for our table
+      } else if (client.config.hadesTechSize[techID]) {
+        client.config.hadesTech.forEach((techValue, techKey) => {
+          if (client.config.hadesTech[techKey].group) == techID) {
+            techLists[techLists.length - 1].set(techKey, techKey); // add all techs from group
+          }
+        });
       } else {
         errors += `Cannot find tech to match ${arg}\n`;
       }
@@ -55,8 +61,8 @@ exports.run = async (client, message, args, level) => {
         members.set(targetID, targetDB);
       } else if (arg.trim() == 'all') {
         //errors += `Showing all: ${arg}\n`; //Debug
-        guildDB.members.forEach(function(targetDB, targetID){
-          members.set(targetDB, target);
+        message.guild.members.forEach(function(targetDB, targetID){
+          members.set(targetID, targetDB);
         });
       } else {
         errors += `I do not recognize the User argument: ${arg}\n`;
@@ -81,17 +87,17 @@ exports.run = async (client, message, args, level) => {
     
     members.forEach( (targetDB, targetID) => {
       let allTech = client.hsTech.get(targetID) || client.hsTech.get('!'+targetID);
-      if (!allTech)   return errors += client.hsTech.map( (val, key) => {
-        return `Id ${targetID} doesn't match ${key}\n`; // Debug
-      }).join('');
+//       if (!allTech)   return errors += client.hsTech.map( (val, key) => {
+//         return `Id ${targetID} doesn't match ${key}\n`; // Debug
+//       }).join('');
       if (!allTech)   return errors += `No tech found for user ${targetID}\n`; // Debug
       if (!targetDB)  return errors += `No record found for user ${targetID}\n`; // Debug
-      errors += `Processing memberID ${targetID}\n`; // Debug
+      //errors += `Processing memberID ${targetID}\n`; // Debug
       let techScore = 0;
       report.cell('name',targetDB.username);
       
       techMap.forEach( (techLabel, techID) => {
-        errors += `Processing ${techID} for memberID ${targetID}\n`; // Debug
+        //errors += `Processing ${techID} for memberID ${targetID}\n`; // Debug
         let techLevel = Number( allTech[techID] ) || 0;
         if (client.config.hadesTech[techID]) {
           techScore += client.config.hadesTech[techID].levels[techLevel - 1] || 0;
@@ -104,22 +110,22 @@ exports.run = async (client, message, args, level) => {
       report.newRow();
     });
     if (report.rows.length < 1) {
-      errors += `Empty report, skipping\n`; // Debug
+      //errors += `Empty report, skipping\n`; // Debug
     } else {
       reportTables[reportTables.length] = report;
-      errors += `Added report table number ${reportTables.length} with  ${reportTables[reportTables.length - 1].rows.length} rows \n`; // Debug
+      //errors += `Added report table number ${reportTables.length} with  ${reportTables[reportTables.length - 1].rows.length} rows \n`; // Debug
     }
   });
 
   if (reportTables.length < 1) return message.reply(`${errors}No data found.`);
-  else return message.reply(`Tech Reports:${errors}\n${"```"}${
+  else return message.reply(`Tech Reports:\n${errors}${"```"}${
     reportTables
       .map( report  => report.rows.length ? report.sort('score|des').toString() : '' ) //get the report texts
       .filter( output => output != '') // remove empty reports
       .join("``` \n ```") // put each report in it's own code block                 
     + "```"
   }`);
-  } catch (error) { return message.reply(`There was an error: ${error}`); } 
+  } catch (error) { return message.reply(`There was an error: ${error}\n${errors}`); } 
 };
 
 exports.conf = {
@@ -132,6 +138,8 @@ exports.conf = {
 exports.help = {
   name: "techreport",
   category: "Hades Star",
-  description: "Show a report on one or more users/roles and their one or more technologies",
-  usage: "techscore [@role or @user]... | [techID]..."
+  description: "Show a report on one or more users/roles and their one or more technologies (run multiple reports on the same users by them by another |".
+  "\n  Example: techreport all | ships".
+  "\n  Example: techreport @nickname @roleName | miner genesis crunch | bs batt passive emp salv,
+  usage: "techreport (all or @role or @user)... | (techID or techGroup)... [| (techId or techGroup)...]..."
 };
