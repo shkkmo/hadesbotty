@@ -167,7 +167,7 @@ exports.run = async (client, message, args, level) => {
         reportTables.forEach((reportTable, reportTableIndex) => {
           let tableContent =  "**Report: "+reportIndex
             + " Part: "+reportTableIndex+ "**\n```"
-            + Array.from(reportTable.values()).join("\n") +"```";
+            + reportTable.join("\n") +"```";
           if (tableContent < discordCharLimit) {
             message.reply(tableContent);
           } else {
