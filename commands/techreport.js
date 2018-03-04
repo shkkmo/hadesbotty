@@ -158,7 +158,7 @@ exports.run = async (client, message, args, level) => {
       + "```";
     return message.reply(`Tech Reports:\n${errors}${reportsContent}`);
   }
-  } catch (error) { return message.reply(`There was an error: ${error}\n${errors}`); } 
+  } catch (error) { return message.reply(`There was an error: ${error.stack}\n${errors}`); } 
 };
 
 exports.conf = {
