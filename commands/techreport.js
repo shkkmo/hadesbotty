@@ -132,12 +132,12 @@ exports.run = async (client, message, args, level) => {
 //         currentTable.newRow();
 //       });// End reportTables.forEach
 //     });// End members.forEach
-    if ( 0 <= Array.from(reportTables.entries()).reduce( (total, value) => {total + } < 1) { return total + value.rows.length }, 0 )) {
-      errors += `Empty report, skipping\n`; // Debug
-    } else {
-      reports[reports.length] = reportTables;
-      errors += `Added report  number ${reports.length} with  ${reports[reports.length - 1].size} tables \n`; // Debug
-    }
+//     if ( 0 <= Array.from(reportTables.entries()).reduce( (total, value) => {total + } < 1) { return total + value.rows.length }, 0 )) {
+//       errors += `Empty report, skipping\n`; // Debug
+//     } else {
+//       reports[reports.length] = reportTables;
+//       errors += `Added report  number ${reports.length} with  ${reports[reports.length - 1].size} tables \n`; // Debug
+//     }
   });//end techLists.forEach
 
   if (reportTables.length < 1) {
