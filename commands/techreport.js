@@ -3,13 +3,13 @@
 
 exports.run = async (client, message, args, level) => { 
 
-  args = args.map(function(x){ return x.toLowerCase() });
+  args = args.map(x => x.toLowerCase());
   const table = require('easy-table');
   var hasData=false,
       $errors = '';
       members = new Map(),
       reportTables = new Array(),
-      techsLists = new Array(),
+      techLists = new Array(),
       argSection = 'users';
     
   args.forEach(function(arg) {
@@ -83,7 +83,7 @@ exports.run = async (client, message, args, level) => {
   else return message.reply(`Tech Reports:${errors}\n' + "```" + reportTables
       .map( report  => report.rows.length ? report.sort('score|des').toString() : '' ) //get the report texts
       .filter(ouput => output != '') // remove empty reports
-      .join("``` \n ```") // put each reprot in it's own code block
+      .join("``` \n ```") // put each report in it's own code block
     + "```"
   );
     
