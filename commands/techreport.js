@@ -64,30 +64,30 @@ exports.run = async (client, message, args, level) => {
     }
   });
   
-//   techLists.forEach(function(techMap){
-//     let report = new table;
-//     members.forEach(function(targetDB, targetID( {
-//       let allTech = client.hsTech.get(targetID);
-//       if (!allTech || !targetDB) return;
-//       let techScore = 0;
-//       report.cell('name',targetDB.username);
-//       techMap.forEach(function(techID, techLabel){
-//         let techLevel = Number( allTech[techID] || 0 );
-//         techScore += client.config.hadesTech[techID].levels[techLevel - 1] || 0;
-//         report.cell(techLabel, techLevel);
-//       });
-//       report.cell('score', techScore);
-//       report.newRow();
-//     });
-//     reportTables[reportTables.length] = report;
-//   });
-//   if (!hasData) return message.reply("No data found.");
-//   else return message.reply(`Tech Reports:${errors}\n' + "```" + reportTables
-//       .map( report  => report.rows.length ? report.sort('score|des').toString() : '' ) //get the report texts
-//       .filter(ouput => output != '') // remove empty reports
-//       .join("``` \n ```") // put each report in it's own code block
-//     + "```"
-//   );
+  techLists.forEach(function(techMap){
+    let report = new table;
+    members.forEach(function(targetDB, targetID( {
+      let allTech = client.hsTech.get(targetID);
+      if (!allTech || !targetDB) return;
+      let techScore = 0;
+      report.cell('name',targetDB.username);
+      techMap.forEach(function(techID, techLabel){
+        let techLevel = Number( allTech[techID] || 0 );
+        techScore += client.config.hadesTech[techID].levels[techLevel - 1] || 0;
+        report.cell(techLabel, techLevel);
+      });
+      report.cell('score', techScore);
+      report.newRow();
+    });
+    reportTables[reportTables.length] = report;
+  });
+  if (!hasData) return message.reply("No data found.");
+  else return message.reply(`Tech Reports:${errors}\n' + "```" + reportTables
+      .map( report  => report.rows.length ? report.sort('score|des').toString() : '' ) //get the report texts
+      .filter(ouput => output != '') // remove empty reports
+      .join("``` \n ```") // put each report in it's own code block
+    + "```"
+  );
     
 };
 
