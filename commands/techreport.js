@@ -18,6 +18,7 @@ exports.run = async (client, message, args, level) => {
       argSection = 'techIDs';
       techLists[techLists.length] = new Map(); //Initialize a new tech list
     } else if ('techIds' == argSection) {
+      //TODO refactor this to use a common tech parsing script
       //errors += client.ParseTechArg(arg, techLists[techLists.length], client.config.hadesTech); 
       let techID = client.normalizeTechName(arg);
       if (client.config.hadesTech[techID]) {
@@ -65,17 +66,21 @@ exports.run = async (client, message, args, level) => {
     }
   });
   
-  techLists.forEach( techMap => {
+  techLists.forEach( (techMap, techIndex) => {
     let report = new table;
-    
+    errors += `Processing techlist number ${techIndex}\n`;
     members.forEach( (targetDB, targetID) => {
+      
       let allTech = client.hsTech.get(targetID);
       if (!allTech || !targetDB) return;
+      
+      errors += `Processing memberID ${targetID}\n`;
       let techScore = 0;
       report.cell('name',targetDB.username);
       
       techMap.forEach( (techID, techLabel) => {
-        let techLevel = Number( allTech[techID] || 0 );
+        errors += `Processing ${techID} for memberID ${targetID}\n`;
+        let techLevel = Number( allTech[techID] ) || 0;
         techScore += client.config.hadesTech[techID].levels[techLevel - 1] || 0;
         report.cell(techLabel, techLevel);
       });
@@ -83,6 +88,7 @@ exports.run = async (client, message, args, level) => {
       report.newRow();
     });
     reportTables[reportTables.length] = report;
+    errors += `Added report table number ${reportTables.length} with  ${reportTables[reportTables.length - 1].rows.length} rows \n`;
   });
 
   if (!hasData) return message.reply("No data found.");
