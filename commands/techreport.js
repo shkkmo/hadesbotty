@@ -78,10 +78,11 @@ exports.run = async (client, message, args, level) => {
   techLists.forEach( (techMap, techIndex) => {
     let report = new table;
     errors += `Processing techlist number ${techIndex}\n`; // Debug
+    
     members.forEach( (targetDB, targetID) => {
-      
       let allTech = client.hsTech.get(targetID);
-      if (!allTech || !targetDB) return;
+      if (!allTech)   return errors += `No tech found for user ${targetID}`; // Debug
+      if (!targetDB)  return errors += `No record found for user ${targetID}`; // Debug
       errors += `Processing memberID ${targetID}\n`; // Debug
       let techScore = 0;
       report.cell('name',targetDB.username);
