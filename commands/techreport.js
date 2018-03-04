@@ -109,7 +109,7 @@ exports.run = async (client, message, args, level) => {
       let techScore = 0;
       
       // Start iterating through this report's tables for this user
-      let reportTableIterator = reportTables[Symbol.iterator];
+      let reportTableIterator = reportTables[Symbol.iterator]();
       let currentTable = false;
       
       techMap.forEach( (techLabel, techID) => {
