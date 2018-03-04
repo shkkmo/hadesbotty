@@ -110,11 +110,15 @@ exports.run = async (client, message, args, level) => {
       
       // Start iterating through this report's tables for this user
       let reportTableIterator = reportTables[Symbol.iterator]();
-      let currentTable = false;
+      var currentTable = false;
       
       techMap.forEach( (techLabel, techID) => {
         if (!currentTable || reportTables.has(techID)) { //need to switch to a new table for this report
-          currentTable = reportTableIterator.next().value; //We could check for doneness, but that should happen...
+          let nextVal = reportTableIterator.next().value;
+          if (nextVal.done) {
+            return errors += "Expected end to reportTables iteration;
+          }
+          currentTable = nextVal.value;
           currentTable.cell('name',targetDB.username, val => String(val).substr(0,13));//Math.min(13,String(val).length);
         }
         //errors += `Processing ${techID} for memberID ${targetID}\n`; // Debug
