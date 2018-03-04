@@ -82,14 +82,14 @@ exports.run = async (client, message, args, level) => {
     reportTables[reportTables.length] = report;
   });
 
-  if (!hasData) return message.reply("No data found.");
-//   else return message.reply(`Tech Reports:${errors}\n${"```"}${
-//     reportTables
-//       .map( report  => report.rows.length ? report.sort('score|des').toString() : '' ) //get the report texts
-//       .filter(ouput => output != '') // remove empty reports
-//       .join("``` \n ```") // put each report in it's own code block                 
-//     + "```"
-//   }`);
+//   if (!hasData) return message.reply("No data found.");
+// //   else return message.reply(`Tech Reports:${errors}\n${"```"}${
+// //     reportTables
+// //       .map( report  => report.rows.length ? report.sort('score|des').toString() : '' ) //get the report texts
+// //       .filter(ouput => output != '') // remove empty reports
+// //       .join("``` \n ```") // put each report in it's own code block                 
+// //     + "```"
+// //   }`);
     
 };
 
