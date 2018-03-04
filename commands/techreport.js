@@ -84,7 +84,7 @@ exports.run = async (client, message, args, level) => {
   
   techLists.forEach( (techMap, techIndex) => {
     let report = new table;
-    errors += `Processing techlist number ${techIndex}\n`; // Debug
+    //errors += `Processing techlist number ${techIndex}\n`; // Debug
     
     members.forEach( (targetDB, targetID) => {
       let allTech = client.hsTech.get(targetID) || client.hsTech.get('!'+targetID);
