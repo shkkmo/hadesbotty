@@ -168,6 +168,7 @@ exports.run = async (client, message, args, level) => {
             message.reply(tableContent);
           } else {
             message.reply(tableContent.substr(0,1970) + "...(too long, trucated)");
+          }
         });
       }
     });
