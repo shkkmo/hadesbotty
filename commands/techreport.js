@@ -165,17 +165,28 @@ exports.run = async (client, message, args, level) => {
       if (reportContent.length < discordCharLimit) {
         message.reply(reportContent);
       } else {
+        var currentMessageContent = '';
+        var currentReportPart = 0;
+        var currentReportPartHeader = '';
         reportTables.forEach((reportTable, reportTableIndex) => {
-          let tableContent =  "**Report: "+reportIndex
-            + " Part: "+reportTableIndex+ "**\n```"
-            + reportTable 
-            + "```";
-          if (tableContent.length < discordCharLimit) {
-            message.reply(tableContent);
+          let tableContent =  "```" + reportTable + "```";
+          
+          if (!currentMessageContent || currentMessageContent.length + 1 + tableContent.length >= discordCharLimit) {
+            if (currentMessageContent) {
+              if (currentMessageContent.length >= discordCharLimit) {
+                currentMessageContent = currentMessageContent.substr(0,discordCharLimit - 20) + "...(too long, trucated)";
+              }
+              message.reply(currentMessageContent);
+            }
+            currentReportPart++;
+            currentMessageContent = "**Report: "+reportIndex
+              + " Part: "+reportTableIndex+ "**\n"
+              + tableContent;
           } else {
-            message.reply(tableContent.substr(0,discordCharLimit - 20) + "...(too long, trucated)");
+            currentMessageContent += "\n" + tableContent;
           }
         });
+        message.reply(currentMessageContent);
       }
     });
   }
