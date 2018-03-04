@@ -81,21 +81,21 @@ exports.run = async (client, message, args, level) => {
     errors += `Unable to find any matching technologies\n`;
   }
   
-//   techLists.forEach( (techMap, techMapIndex) => {
+  techLists.forEach( (techMap, techMapIndex) => {
     
-//     //errors += `Processing techlist number ${techMapIndex}\n`; // Debug
-//     var headerWidth = 0;
-//     var reportTables = new Map();
-// //     techMap.forEach( (techLabel, techID) => {
-// //       let colWidth = techLabel.length + (headerWidth > 0 ? 2 : 0);
-// //       if (headerWidth + colWidth > 40) { // 2 is the spacing between cols and 50 is max width 60 minus score column (7) and name column (13)
-// //         reportTables.add(techID, new table); // Add a map entry with the first techID that doesn't fit in this report
-// //         headerWidth = techLabel.length; // Set headerwidth for next report table to the label for the first tech
-// //       } else {
-// //         headerWidth += colWidth;
-// //       }
-// //     })
-//     reportTables.add('', new table);// Add the last table, it has not techID that won't fit
+    //errors += `Processing techlist number ${techMapIndex}\n`; // Debug
+    var headerWidth = 0;
+    var reportTables = new Map();
+//     techMap.forEach( (techLabel, techID) => {
+//       let colWidth = techLabel.length + (headerWidth > 0 ? 2 : 0);
+//       if (headerWidth + colWidth > 40) { // 2 is the spacing between cols and 50 is max width 60 minus score column (7) and name column (13)
+//         reportTables.add(techID, new table); // Add a map entry with the first techID that doesn't fit in this report
+//         headerWidth = techLabel.length; // Set headerwidth for next report table to the label for the first tech
+//       } else {
+//         headerWidth += colWidth;
+//       }
+//     })
+    reportTables.add('', new table);// Add the last table, it has not techID that won't fit
     
 //     members.forEach( (targetDB, targetID) => {
       
@@ -126,32 +126,32 @@ exports.run = async (client, message, args, level) => {
 //           errors += `Invalid techID ${techID}\n`;
 //         }
 //         currentTable.cell(techLabel, techLevel);
-//       });
+//       });// End techMap.forEach
 //       reportTables.forEach( (currentTable, index) => { 
 //         currentTable.cell('score', techScore); 
 //         currentTable.newRow();
-//       } );
-//     });
-//     if ( 0 <= Array.from(reportTables.entries()).reduce( (total, value) => {total + } < 1) { return total + value.rows.length }, 0 )) {
-//       errors += `Empty report, skipping\n`; // Debug
-//     } else {
-//       reports[reports.length] = reportTables;
-//       errors += `Added report  number ${reports.length} with  ${reports[reports.length - 1].size} tables \n`; // Debug
-//     }
-//   });
+//       });// End reportTables.forEach
+//     });// End members.forEach
+    if ( 0 <= Array.from(reportTables.entries()).reduce( (total, value) => {total + } < 1) { return total + value.rows.length }, 0 )) {
+      errors += `Empty report, skipping\n`; // Debug
+    } else {
+      reports[reports.length] = reportTables;
+      errors += `Added report  number ${reports.length} with  ${reports[reports.length - 1].size} tables \n`; // Debug
+    }
+  });//end techLists.forEach
 
-//   if (reportTables.length < 1) return message.reply(`${errors}No data found.`);
-//   else return message.reply(`Tech Reports:\n${errors}${"```"}${"" + 
-// //     reports
-// //       .map( reportTables  =>  //get the report texts
-// //          Array.from(reportTables.entries())  //print all tables for report
-// //            .map( table => table.rows.length ? table.sort('score|des').toString() : '' )
-// //            .join("\n")
-// //       )
-// //       .filter( output => output != '') // remove empty reports
-// //       .join("``` \n ```") // put each report in it's own code block                 
-// //     + "```"
-//   }`);
+  if (reportTables.length < 1) return message.reply(`${errors}No data found.`);
+  else return message.reply(`Tech Reports:\n${errors}${"```"}${"" + 
+//     reports
+//       .map( reportTables  =>  //get the report texts
+//          Array.from(reportTables.entries())  //print all tables for report
+//            .map( table => table.rows.length ? table.sort('score|des').toString() : '' )
+//            .join("\n")
+//       )
+//       .filter( output => output != '') // remove empty reports
+//       .join("``` \n ```") // put each report in it's own code block                 
+//     + "```"
+  }`);
   } catch (error) { return message.reply(`There was an error: ${error}\n${errors}`); } 
 };
 
