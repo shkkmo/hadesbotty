@@ -170,7 +170,7 @@ exports.run = async (client, message, args, level) => {
             + " Part: "+reportTableIndex+ "**\n```"
             + reportTable 
             + "```";
-          if (tableContent < discordCharLimit) {
+          if (tableContent.length < discordCharLimit) {
             message.reply(tableContent);
           } else {
             message.reply(tableContent.substr(0,discordCharLimit - 20) + "...(too long, trucated)");
