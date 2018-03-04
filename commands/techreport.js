@@ -59,7 +59,9 @@ exports.run = async (client, message, args, level) => {
       } else {
         errors += `I do not recognize the User argument: ${arg}\n`;
       }
-    } else 
+    } else {
+      errors += `Invalid argument section: ${argSection}\n`;
+    }
   });
   
 //   techLists.forEach(function(techMap){
