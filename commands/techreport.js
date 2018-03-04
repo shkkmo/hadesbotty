@@ -160,14 +160,16 @@ exports.run = async (client, message, args, level) => {
       );
     reportsContent.forEach((reportTables, reportIndex) => {
       let reportContent = "**Report "+reportIndex+"**\n```" 
-        + reportTables.join("\n") + "```";
+        + reportTables.join("\n") 
+        + "```";
       if (reportContent.length < discordCharLimit) {
         message.reply(reportContent);
       } else {
         reportTables.forEach((reportTable, reportTableIndex) => {
           let tableContent =  "**Report: "+reportIndex
             + " Part: "+reportTableIndex+ "**\n```"
-            + reportTable.join("\n") +"```";
+            + reportTable 
+            + "```";
           if (tableContent < discordCharLimit) {
             message.reply(tableContent);
           } else {
