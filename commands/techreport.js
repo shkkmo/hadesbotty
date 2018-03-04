@@ -158,13 +158,16 @@ exports.run = async (client, message, args, level) => {
            .map( table => table.rows.length ? table.sort('score|des').toString() : '' )
       );
     reportsContent.forEach((reportTables, reportIndex) => {
-      let reportContent = "**Report "+reportIndex+"***\n```" + reportTables.join("/n") + "```" ;
+      let reportContent = "**Report "+reportIndex+"**\n```" + reportTables.join("\n") + "```" ;
       if (reportContent.length < 2000) {
         message.reply(reportContent);
       } else {
         reportTables.forEach((reportTable, reportTableIndex) => {
-          let tableContent =  "**Report: "+reportIndex+" Part: "+reportTableIndex+ "***\n```"+ reportTables.join("/n") +"```" ;
-          message.reply(tableContent);
+          let tableContent =  "**Report: "+reportIndex+" Part: "+reportTableIndex+ "***\n```"+ reportTables.join("\n") +"```" ;
+          if (tableContent < 2000) {
+            message.reply(tableContent);
+          } else {
+            message.reply(tableContent.substr(0,1970) + "...(too long, trucated)");
         });
       }
     });
