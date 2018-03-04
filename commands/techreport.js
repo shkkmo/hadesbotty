@@ -7,7 +7,7 @@ exports.run = async (client, message, args, level) => {
   const table = require('easy-table');
   try {
   var hasData=false,
-      $errors = '';
+      errors = '';
       members = new Map(),
       reportTables = new Array(),
       techLists = new Array(),
