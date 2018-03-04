@@ -118,7 +118,7 @@ exports.run = async (client, message, args, level) => {
           if (nextVal.done) {
             return errors += "Expected end to reportTables iteration\n";
           }
-          currentTable = nextVal.value[1];
+          currentTable = nextVal.value;
           currentTable.cell('name',targetDB.username, val => String(val).substr(0,13));//Math.min(13,String(val).length);
         }
         //errors += `Processing ${techID} for memberID ${targetID}\n`; // Debug
