@@ -118,8 +118,8 @@ exports.run = async (client, message, args, level) => {
           if (nextVal.done) {
             return errors += "Expected end to reportTables iteration\n";
           }
-          currentTable = nextVal.value;
-          currentTable.cell('name',targetDB.username, val => String(val).substr(0,13));//Math.min(13,String(val).length);
+          //currentTable = nextVal.value;
+          //currentTable.cell('name',targetDB.username, val => String(val).substr(0,13));//Math.min(13,String(val).length);
         }
         //errors += `Processing ${techID} for memberID ${targetID}\n`; // Debug
         let techLevel = Number( allTech[techID] ) || 0;
@@ -128,7 +128,7 @@ exports.run = async (client, message, args, level) => {
         } else {
           errors += `Invalid techID ${techID}\n`;
         }
-        currentTable.cell(techLabel, techLevel);
+        //currentTable.cell(techLabel, techLevel);
       });// End techMap.forEach
       reportTables.forEach( (currentTable) => { 
         currentTable.cell('score', techScore); 
