@@ -107,14 +107,13 @@ exports.run = async (client, message, args, level) => {
       if (!targetDB)  return errors += `No record found for user ${targetID}\n`; // Debug
       //errors += `Processing memberID ${targetID}\n`; // Debug
       let techScore = 0;
-      currentTable.cell('name',targetDB.username);
       
       // Start iterating through this report's tables for this user
       let reportTableIterator = reportTable[Symbol.iterator];
       let currentTable = false;
       
       techMap.forEach( (techLabel, techID) => {
-        if (!currentTable || reportTables.has(techID)) { //need to switch to  move o
+        if (!currentTable || reportTables.has(techID)) { //need to switch to a new table for this report
           currentTable = reportTableIterator.next().value; //We could check for doneness, but that should happen...
           currentTable.cell('name',targetDB.username, val => String(val).substr(0,13));//Math.min(13,String(val).length);
         }
