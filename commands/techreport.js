@@ -42,7 +42,7 @@ exports.run = async (client, message, args, level) => {
       }
       else if (arg.indexOf("<@") >= 0 ) { //target is a USER
         var targetID = arg.replace("<@","").replace(">","").replace("!","");
-        var targetDB = client.userDB.get(targetID) || {username: targetID, lastSeen: false}
+        var targetDB = client.userDB.get(targetID);// || {username: targetID, lastSeen: false}
 //         if (!targetDB.lastSeen) {
 //           errors += `I have no records for ${targetDB.username}.\n`;
 //           return true; //Skip to next member of args
@@ -80,9 +80,9 @@ exports.run = async (client, message, args, level) => {
     errors += `Processing techlist number ${techIndex}\n`; // Debug
     
     members.forEach( (targetDB, targetID) => {
-      let allTech = client.hsTech.get(targetID);
-      if (!allTech)   return errors += `No tech found for user ${targetID}`; // Debug
-      if (!targetDB)  return errors += `No record found for user ${targetID}`; // Debug
+      let allTech = client.hsTech.get(targetID) || client.hsTech.get('!'+targetID);
+      if (!allTech)   return errors += `No tech found for user ${targetID}\n`; // Debug
+      if (!targetDB)  return errors += `No record found for user ${targetID}\n`; // Debug
       errors += `Processing memberID ${targetID}\n`; // Debug
       let techScore = 0;
       report.cell('name',targetDB.username);
