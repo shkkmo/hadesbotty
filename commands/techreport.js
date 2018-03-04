@@ -159,13 +159,14 @@ exports.run = async (client, message, args, level) => {
            .map( table => table.rows.length ? table.sort('score|des').toString() : '' )
       );
     reportsContent.forEach((reportTables, reportIndex) => {
-      let reportContent = "**Report "+reportIndex+"**\n```" + reportTables.join("\n") + "```" ;
+      let reportContent = "**Report "+reportIndex+"**\n```" 
+        + reportTables.join("\n") + "```";
       if (reportContent.length < discordCharLimit) {
         message.reply(reportContent);
       } else {
         reportTables.forEach((reportTable, reportTableIndex) => {
           let tableContent =  "**Report: "+reportIndex
-            + " Part: "+reportTableIndex+ "***\n```"
+            + " Part: "+reportTableIndex+ "**\n```"
             + Array.from(reportTable.values()).join("\n") +"```";
           if (tableContent < discordCharLimit) {
             message.reply(tableContent);
