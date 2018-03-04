@@ -17,7 +17,7 @@ exports.run = async (client, message, args, level) => {
     if ('|' == arg.trim()) {
       argSection = 'techIDs';
       techLists[techLists.length] = new Map(); //Initialize a new tech list
-    } else if ('techIds' == argSection) {
+    } else if ('techIDs' == argSection) {
       //TODO refactor this to use a common tech parsing script
       //errors += client.ParseTechArg(arg, techLists[techLists.length], client.config.hadesTech); 
       let techID = client.normalizeTechName(arg);
@@ -43,12 +43,12 @@ exports.run = async (client, message, args, level) => {
       else if (arg.indexOf("<@") >= 0 ) { //target is a USER
         var targetID = arg.replace("<@","").replace(">","").replace("!","");
         var targetDB = client.userDB.get(targetID) || {username: targetID, lastSeen: false}
-        if (!targetDB.lastSeen) {
-          errors += `I have never seen ${targetDB.username}.\n`;
-          return true; //Skip to next member of args
-        }
+//         if (!targetDB.lastSeen) {
+//           errors += `I have no records for ${targetDB.username}.\n`;
+//           return true; //Skip to next member of args
+//         }
         if (message.author.id === targetID) {
-          errors += "Do you need a mirror ???\n";
+          //errors += "Do you need a mirror ???\n"; //Debug
         } else {
           //errors += `Showing member: ${arg}\n`; //Debug
         }
