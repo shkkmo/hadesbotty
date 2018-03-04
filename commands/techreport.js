@@ -148,21 +148,21 @@ exports.run = async (client, message, args, level) => {
     }
   });//end techLists.forEach
 
-//   if (reportTables.length < 1) {
-//     return message.reply(`${errors}No data found.`);
-//   } else { 
-//     let reportsContent = "```"
-//     + reports
-//       .map( reportTables  =>  //get the report texts
-//          Array.from(reportTables.values())  //print all tables for report
-//            .map( table => table.rows.length ? table.sort('score|des').toString() : '' )
-//            .join("\n")
-//       )
-//       .filter( output => output != '') // remove empty reports
-//       .join("``` \n ```") // put each report in it's own code block                 
-//       + "```";
-//     return message.reply(`Tech Reports:\n${errors}${reportsContent}`);
-//   }
+  if (reportTables.length < 1) {
+    return message.reply(`${errors}No data found.`);
+  } else { 
+    let reportsContent = "```"
+    + reports
+      .map( reportTables  =>  //get the report texts
+         Array.from(reportTables.values())  //print all tables for report
+           .map( table => table.rows.length ? table.sort('score|des').toString() : '' )
+           .join("\n")
+      )
+      .filter( output => output != '') // remove empty reports
+      .join("``` \n ```") // put each report in it's own code block                 
+      + "```";
+    return message.reply(`Tech Reports:\n${errors}${reportsContent}`);
+  }
   } catch (error) { return message.reply(`There was an error: ${error}\n${errors}`); } 
 };
 
