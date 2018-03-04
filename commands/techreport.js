@@ -116,7 +116,7 @@ exports.run = async (client, message, args, level) => {
         if (!currentTable || reportTables.has(techID)) { //need to switch to a new table for this report
           let nextVal = reportTableIterator.next().value;
           if (nextVal.done) {
-            return errors += "Expected end to reportTables iteration;
+            return errors += "Expected end to reportTables iteration\n";
           }
           currentTable = nextVal.value;
           currentTable.cell('name',targetDB.username, val => String(val).substr(0,13));//Math.min(13,String(val).length);
