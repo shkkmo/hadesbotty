@@ -151,7 +151,11 @@ module.exports = (client) => {
     // to-do: same thing for targetDB
     if (client.userDB.get(message.author.id)) {
       message.userDB = client.userDB.get(message.author.id);
-      message.userDB.username = message.author.username;
+      //message.userDB.username = message.author.username;
+      message.userDB.username = message.guild.fetchMember(message.author).displayName
+        .then(console.log)
+        .catch(console.error);
+
       message.userDB.lastSeen = Date.now();
     }
     else
