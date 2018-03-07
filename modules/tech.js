@@ -3,19 +3,12 @@
 module.exports = (client) => {
 
   // *** userDB stores user information
-  
   client.checkUserDB = (client, message) => {
     if (message.channel.type !=='text') return;
     const settings = client.settings.get(message.guild.id);
     
-    // For ease of use in commands and functions, attach the userDB to the message object
+    // For ease of use in commands and functions, attach the current userDB to the message object
     message.userDB = client.userDB.get(message.author.id) || {username: message.author.username};
-    if (client.userDB.get(message.author.id)) {
-      message.userDB.lastSeen = Date.now();
-      message.guild.fetchMember(message.author.id)
-        .then(result => message.userDB.username = result.displayName);
-    //client.logger.debug("> "+JSON.stringify(message.userDB));
-
 
     // ** Points system
     if (!message.userDB[message.guild.id]) 
@@ -30,8 +23,12 @@ module.exports = (client) => {
       message.userDB[message.guild.id].level = curLevel;
     }
 
-    //Update into client:  
-    client.userDB.set(message.author.id, message.userDB);
+    message.userDB.lastSeen = Date.now();
+    message.guild.fetchMember(message.author.id)
+      .then(result => message.userDB.username = result.displayName)
+      .then(client.userDB.set(message.author.id, message.userDB)); //Update into client to permanetly store in levelDB 
+
+    //client.logger.debug("> "+JSON.stringify(message.userDB));
   };
   
   client.normalizeTechName = (name) => {
