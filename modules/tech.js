@@ -1,5 +1,3 @@
-// *** HadesBotty stuff ***
-
 module.exports = (client) => {
 
   // *** userDB stores user information
@@ -23,6 +21,7 @@ module.exports = (client) => {
       message.userDB[message.guild.id].level = curLevel;
     }
 
+    // Update username and lastseen
     message.userDB.lastSeen = Date.now();
     message.guild.fetchMember(message.author.id)
       .then(result => message.userDB.username = result.displayName)

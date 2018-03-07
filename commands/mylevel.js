@@ -2,7 +2,7 @@ exports.run = async (client, message, args, level) => {
   const friendly = client.config.permLevels.find(l => l.level === level).name;
   const scoreLevel = message.userDB[message.guild.id].level;
   var msg = `Your permission level is: ${level} - ${friendly}`;
-  !scoreLevel ? msg += '\nYou have no chatting levels yet.' : msg += `\nYour chatting level is ${scoreLevel}!`;
+  !scoreLevel ? msg += 'You have no chatting levels yet.' : msg += `\nYour chatting level is ${scoreLevel}!`;
   message.reply(msg);
 };
 
