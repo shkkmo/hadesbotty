@@ -1,9 +1,40 @@
-/*
-      // ** I moved it to functions.js because i was not sure why it wast working when importing from here.
-      
+// *** HadesBotty stuff ***
 
-module.exports = {
-  normalizeTechName: (name) => {
+module.exports = (client) => {
+
+  // *** userDB stores user information
+  
+  client.checkUserDB = (client, message) => {
+    if (message.channel.type !=='text') return;
+    const settings = client.settings.get(message.guild.id);
+    
+    // For ease of use in commands and functions, attach the userDB to the message object
+    message.userDB = client.userDB.get(message.author.id) || {username: message.author.username};
+    if (client.userDB.get(message.author.id)) {
+      message.userDB.lastSeen = Date.now();
+      message.guild.fetchMember(message.author.id)
+        .then(result => message.userDB.username = result.displayName);
+    //client.logger.debug("> "+JSON.stringify(message.userDB));
+
+
+    // ** Points system
+    if (!message.userDB[message.guild.id]) 
+      message.userDB[message.guild.id] = {name: message.guild.name, level: 0, points: 0, commands: 0 };
+    if (message.content.indexOf(settings.prefix) === 0) 
+      message.userDB[message.guild.id].commands++;
+    else
+      message.userDB[message.guild.id].points++;
+    const curLevel = Math.floor(0.1 * Math.sqrt(message.userDB[message.guild.id].points));
+    if (message.userDB[message.guild.id].level < curLevel) {
+      //message.reply(`You've leveled up to chat level **${curLevel}**!`);
+      message.userDB[message.guild.id].level = curLevel;
+    }
+
+    //Update into client:  
+    client.userDB.set(message.author.id, message.userDB);
+  };
+  
+  client.normalizeTechName = (name) => {
     switch(name.toLowerCase()) {
       case "ts":
       case "trans":
@@ -95,6 +126,7 @@ module.exports = {
       case "tele":
          return "teleport";
       case "rse":
+      case "extender":
       case "redstarextender":
          return "rsextender";
       case "remoterepair":
@@ -119,6 +151,7 @@ module.exports = {
       case "alpharocket":
       case "arocket":
       case "rock":
+      case "rockets":
          return "rocket";
       case "salv":
          return "salvage";
@@ -136,5 +169,4 @@ module.exports = {
     }
     return name.toLowerCase()
   }
-}
-*/
+};
