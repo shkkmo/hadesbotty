@@ -1,35 +1,5 @@
 module.exports = (client) => {
 
-  // *** userDB stores user information
-  client.checkUserDB = (client, message) => {
-    if (message.channel.type !=='text') return;
-    const settings = client.settings.get(message.guild.id);
-    
-    // For ease of use in commands and functions, attach the current userDB to the message object
-    message.userDB = client.userDB.get(message.author.id) || {username: message.author.username};
-
-    // ** Points system
-    if (!message.userDB[message.guild.id]) 
-      message.userDB[message.guild.id] = {name: message.guild.name, level: 0, points: 0, commands: 0 };
-    if (message.content.indexOf(settings.prefix) === 0) 
-      message.userDB[message.guild.id].commands++;
-    else
-      message.userDB[message.guild.id].points++;
-    const curLevel = Math.floor(0.1 * Math.sqrt(message.userDB[message.guild.id].points));
-    if (message.userDB[message.guild.id].level < curLevel) {
-      //message.reply(`You've leveled up to chat level **${curLevel}**!`);
-      message.userDB[message.guild.id].level = curLevel;
-    }
-
-    // Update username and lastseen
-    message.userDB.lastSeen = Date.now();
-    message.guild.fetchMember(message.author.id)
-      .then(result => message.userDB.username = result.displayName)
-      .then(client.userDB.set(message.author.id, message.userDB)); //Update into client to permanetly store in levelDB 
-
-    //client.logger.debug("> "+JSON.stringify(message.userDB));
-  };
-  
   client.normalizeTechName = (name) => {
     switch(name.toLowerCase()) {
       case "ts":
