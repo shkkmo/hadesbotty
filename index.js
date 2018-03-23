@@ -1,6 +1,3 @@
-//throw new Error("DISABLED FOR TESTING");
-
-
 if (process.version.slice(1).split(".")[0] < 8) throw new Error("Node 8.0.0 or higher is required. Update Node on your system.");
 
 const Discord = require("discord.js");
@@ -14,8 +11,6 @@ client.config = require("./config.js");
 client.logger = require("./util/Logger");
 require("./modules/functions.js")(client);
 require("./modules/tech.js")(client);
-
-//client.HadesTechTool = require("./modules/tech.js");
 
 client.commands = new Enmap();
 client.aliases = new Enmap();

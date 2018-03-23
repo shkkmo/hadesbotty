@@ -18,9 +18,6 @@ techreport: Report on various users/techs
 
 time : sets and tells Local Time for any/all guild members
 
-
-..
-
 ===============================================================================
 
 # This is build upon the Idiots Guide Bot
