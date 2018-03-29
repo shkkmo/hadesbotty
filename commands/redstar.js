@@ -154,7 +154,7 @@ function action_status(client, userID, rsQueName, message) {
     userIDs = new Array(userID);
   }
   message += `RS${rsQueName} Status: ${userNum}/5 in que ${readyNum}/${userNum} are ready.`;
-  if (quePosition > 5)
+  if (quePosition > 5);
   if (false !== rsQueInfo.kickTime) {
     var tillKick = (rsQueInfo.kickTime - Date.now()) / 1000;
     message += ` **${tillKick}**s until you can kick unready players.`
@@ -245,7 +245,7 @@ function action_join(client, userID, rsQueName) {
   client.logger.error("About to set " + 'userQue'+userID);
   client.redstarQue.set('userQue'+userID, {rsQueName:rsQueName, ready: false});
   rsQueInfo.users.push(userID);
-  if (rsQueInfo.users.length >= 5 && !rsQueInfo.kickTime) {
+  if (rsQueInfo.users.length >= 2 && !rsQueInfo.kickTime) {
     rsQueInfo.kickTime = Date.now() + 120 * 1000;
   } else {
     rsQueInfo.kickTime = false;
