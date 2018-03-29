@@ -246,7 +246,7 @@ function action_join(client, userID, rsQueName) {
   client.redstarQue.set('userQue'+userID, {rsQueName:rsQueName, ready: false});
   rsQueInfo.users.push(userID);
   if (rsQueInfo.users.length >= (1+1) && !rsQueInfo.kickTime) {
-    rsQueInfo.kickTime = Date.now() + 120 * 1000;
+    rsQueInfo.kickTime = Date.now() + 12 * 1000;
   } else {
     rsQueInfo.kickTime = false;
   }
