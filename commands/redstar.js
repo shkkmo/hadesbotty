@@ -245,7 +245,7 @@ function action_join(client, userID, rsQueName) {
   client.logger.error("About to set " + 'userQue'+userID);
   client.redstarQue.set('userQue'+userID, {rsQueName:rsQueName, ready: false});
   rsQueInfo.users.push(userID);
-  if (rsQueInfo.users.length >= 2 && !rsQueInfo.kickTime) {
+  if (rsQueInfo.users.length >= (1+1) && !rsQueInfo.kickTime) {
     rsQueInfo.kickTime = Date.now() + 120 * 1000;
   } else {
     rsQueInfo.kickTime = false;
@@ -299,11 +299,11 @@ function action_kick(client, userID) {
     action_join(client, userID, rsQueName);
     return true;
   }
-  if (!rsQueInfo.kickTIme) {
+  if (!rsQueInfo.kickTime) {
     client.fetchUser(userID).then(user => {user.send("You cannot kick people if the RS"+rsQueName+" que is not full.")});
     return true;
   }
-  var timeTillKick = Date.now() - rsQueInfo.kickTime;
+  var timeTillKick = rsQueInfo.kickTime - Date.now();
   if (0 < timeTillKick) {
     client.fetchUser(userID).then(user => {user.send("You cannot kick people for another "+(timeTillKick/1000)+" seconds in the RS"+rsQueName+" que")});
     return true;
@@ -315,7 +315,7 @@ function action_kick(client, userID) {
   rsQueInfo.users.forEach( (userIDcompare) => {
     if (userNum >= 5) return;
     userNum++;
-    if (client.redstarQue.get('userQue'+userID).ready) {
+    if (client.redstarQue.get('userQue'+userIDcompare).ready) {
       readyUsers.push(userIDcompare);
     } else {
       kickableUsers.push(userIDcompare);
@@ -328,6 +328,8 @@ function action_kick(client, userID) {
     client.fetchUser(userID).then(user => {user.send("You are not in the current RS"+rsQueName+" match so cannot kick people yet. Please wait another "+((timeTillKick + 120000)/1000)+" seconds.")});
     return true;
   }
+  rsQueInfo.kickTime = false;
+  client.redstarQue.set('redstarQue'+rsQueName, rsQueInfo);
   action_send(client, kickableUsers, "You have been kicked from the RS"+rsQueName+" que because you didn't mark yourself as ready soon enough. You can re-join the que but please pay attention.");
   kickableUsers.forEach( (userID) => {
     action_leave(client, userID, true);
@@ -335,7 +337,7 @@ function action_kick(client, userID) {
   readyUsers.forEach( (userID) => {
     action_ready(client, userID, false);
   });
-  action_status(client, userID, rsQueName, "AFK players have been kicked from the RS"+rsQueName+" que and everyone has been set to not ready status");
+  action_status(client, userID, rsQueName, ""+kickableUsers.length+" AFK players have been kicked from the RS"+rsQueName+" que and everyone has been set to not ready status");
 }
 
 exports.conf = {
