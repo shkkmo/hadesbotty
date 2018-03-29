@@ -110,8 +110,8 @@ exports.run = async (client, message, args, level) => {
 };
 
 const MATCH_MAX = 5;
-const MATCH_MIN = 5;
-const MATCH_KICK = 120;
+const MATCH_MIN = 4;
+const MATCH_KICK = 120 * 1000;
 function action_status(client, userID, rsQueName, message) {
   if (message) {
     message += "\n"
@@ -159,14 +159,14 @@ function action_status(client, userID, rsQueName, message) {
   if (singleMessage) {
     userIDs = new Array(userID);
   }
-  message += `RS${rsQueName} Status: ${userNum}/MATCH_MAX in que ${readyNum}/${userNum} are ready.`;
+  message += `RS${rsQueName} Status: ${userNum}/${MATCH_MAX} in que ${readyNum}/${userNum} are ready.`;
   if (quePosition > MATCH_MAX)
   if (false !== rsQueInfo.kickTime) {
     var tillKick = Math.round((rsQueInfo.kickTime - Date.now()) / 1000, 0);
     message += ` **${tillKick}**s until you can kick unready players.`
   }
   action_send(client, userIDs, message, targetUserID);
-  if (readyNum >= userNum && readyNum > 0) {
+  if (readyNum >= userNum && readyNum >= MATCH_MIN) {
     action_start(client, rsQueName, rsQueInfo);
     return true;
   }
@@ -199,7 +199,7 @@ function action_start(client, rsQueName, rsQueInfo) {
   setTimeout(action_send, 1,     client, userIDs, "Countdown, 30s left until scan");
   setTimeout(action_send, 20000, client, userIDs, "Countdown, 10s left until scan");
   setTimeout(action_send, 30000, client, userIDs, "Countdown, SCAN NOW!");
-  setTimeout(action_status, 4MATCH_MAX000, client, false, rsQueName, "The previous match was started 1MATCH_MAXs ago, You are now part of the new match");
+  setTimeout(action_status, 45000, client, false, rsQueName, "The previous match was started 1MATCH_MAXs ago, You are now part of the new match");
   return true;
 }
              
@@ -223,7 +223,7 @@ function action_leave(client, userID, suppressStatus) {
   rsQueInfo.users.splice(rsQueInfo.users.indexOf(userID),1);
   client.redstarQue.set('redstarQue'+rsQueName, rsQueInfo);
   client.redstarQue.delete('userQue'+userID);
-  //client.fetchUser(userID).then(user => {user.send("You left the RS"+rsQueName+" que, Goodbye!")});
+  client.fetchUser(userID).then(user => {user.send("You left the RS"+rsQueName+" que, Goodbye!")});
   if (!suppressStatus) {
     action_status(client, userID, rsQueName, "Someone left the RS"+rsQueName+" que");
   }
@@ -252,7 +252,7 @@ function action_join(client, userID, rsQueName) {
   client.redstarQue.set('userQue'+userID, {rsQueName:rsQueName, ready: false});
   rsQueInfo.users.push(userID);
   if (rsQueInfo.users.length >= (1+1) && !rsQueInfo.kickTime) {
-    rsQueInfo.kickTime = Date.now() + 12 * 1000;
+    rsQueInfo.kickTime = Date.now() + MATCH_KICK;
   } else {
     rsQueInfo.kickTime = false;
   }
@@ -330,7 +330,7 @@ function action_kick(client, userID) {
       inCurrentMatch = true;
     }
   });
-  if (!inCurrentMatch && -120000 < timeTillKick) {
+  if (!inCurrentMatch && (0 - MATCH_KICK) < timeTillKick) {
     client.fetchUser(userID).then(user => {user.send("You are not in the current RS"+rsQueName+" match so cannot kick people yet. Please wait another "+((timeTillKick + 120000)/1000)+" seconds.")});
     return true;
   }
@@ -358,11 +358,17 @@ function action_talk(client, userID, args) {
     return true;
   }
   var rsQueInfo = client.redstarQue.get('redstarQue'+rsQueName);
-  if (-1 === rsQueInfo.users.indexOf(userID)) {
+  var quePosition = rsQueInfo.users.indexOf(userID);
+  if (-1 === quePosition) {
     client.fetchUser(userID).then(user => {user.send("The RS"+rsQueName+" que you were supposed to be in doesn't have you, joining now but not kicking anyone!")});
     action_join(client, userID, rsQueName);
     return true;
   }
+  if (MATCH_MAX < quePosition) {
+    
+  } else {
+  }
+  
 }
 
 exports.conf = {
@@ -375,7 +381,7 @@ exports.conf = {
 exports.help = {
   name: "redstar",
   category: "Hades Star",
-  description: "Joins a cross-server que for a redstar level that communicate through DM. The que starts counting down as soon as all users are ready. If there are MATCH_MAX users in the que, the option to kick AFK/unready player becomes available after 2 minutes.\n"+
+  description: "Joins a cross-server que for a redstar level that communicate through DM. The que starts counting down as soon as all users are ready. If there are "+MATCH_MAX+" users in the que, the option to kick AFK/unready player becomes available after 2 minutes.\n"+
     "  Example: redstar 6 (Joins the RS6 que)\n"+
     "  Example: redstar status (View the current que status)\n"+
     "  Example: redstar leave (Leave the que)\n"+
