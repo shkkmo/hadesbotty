@@ -372,7 +372,7 @@ function action_talk(client, userID, args) {
     action_join(client, userID, rsQueName);
     return true;
   }
-  return action_send(client, userID, "User(#"+quePosition+"): "+args.join(' '), rsQueInfo.users);
+  return action_send(client, rsQueInfo.users, "User(#**"+quePosition+"**): "+args.join(' '), userID);
 }
 
 exports.conf = {
