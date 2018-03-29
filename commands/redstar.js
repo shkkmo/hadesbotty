@@ -112,13 +112,13 @@ exports.run = async (client, message, args, level) => {
 const MATCH_MAX = 5;
 const MATCH_MIN = 4;
 const MATCH_KICK = 120 * 1000;
+
 function action_status(client, userID, rsQueName, message) {
   if (message) {
     message += "\n"
   } else {
     message = "";
   }
-  
   var targetUserID = userID;
   var singleMessage = false;
   if (userID && !rsQueName) {
@@ -134,7 +134,7 @@ function action_status(client, userID, rsQueName, message) {
     client.fetchUser(userID).then(user => {user.send("The RS"+rsQueName+" que you were in does not exist!")});
     //client.logger.error("Cannot find "+'redstarQue'+rsQueName); // Debug
     //client.logger.error(require('util').inspect(client.redstarQue)); // Debug
-    //client.redstarQue.delete('userQue'+userID);
+    client.redstarQue.delete('userQue'+userID);
     return true;
   }
   var rsQueInfo = client.redstarQue.get('redstarQue'+rsQueName);
@@ -160,9 +160,13 @@ function action_status(client, userID, rsQueName, message) {
     userIDs = new Array(userID);
   }
   message += `RS${rsQueName} Status: ${userNum}/${MATCH_MAX} in que ${readyNum}/${userNum} are ready.`;
-  if (quePosition > MATCH_MAX)
+  var extraKickTime = 0;
+  if (quePosition > MATCH_MAX) {
+    extraKickTime = MATCH_KICK_EXTRA;
+    message = "You are #**"+quePosition+"** in the que and must wait for this match to start or kick users.\n"+message;
+  }
   if (false !== rsQueInfo.kickTime) {
-    var tillKick = Math.round((rsQueInfo.kickTime - Date.now()) / 1000, 0);
+    var tillKick = Math.round((extraKickTime + rsQueInfo.kickTime - Date.now()) / 1000, 0);
     message += ` **${tillKick}**s until you can kick unready players.`
   }
   action_send(client, userIDs, message, targetUserID);
