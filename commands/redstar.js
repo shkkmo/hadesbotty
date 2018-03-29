@@ -112,8 +112,8 @@ exports.run = async (client, message, args, level) => {
   } 
 };
 
-const MATCH_MAX = 2;
-const MATCH_MIN = 1;
+const MATCH_MAX = 5;
+const MATCH_MIN = 2;
 const MATCH_KICK = 120 * 1000;
 const MATCH_KICK_EXTRA = MATCH_KICK;
 
@@ -163,18 +163,18 @@ function action_status(client, userID, rsQueName, message) {
   if (singleMessage) {
     userIDs = new Array(userID);
   }
-  message += `RS${rsQueName} Status: ${userNum}/${MATCH_MAX} in que ${readyNum}/${userNum} are ready.`;
+  message += `RS${rsQueName} Status: ${userNum}/${MATCH_MAX} in que ${readyNum}/${userNum} are ready`;
   var extraKickTime = 0;
   if (quePosition > MATCH_MAX) {
     extraKickTime = MATCH_KICK_EXTRA;
-    message = "You are #**"+quePosition+"** in the que and must wait for this match to start or kick users.\n"+message;
+    message = "You are #**"+quePosition+"** in the que and must wait for this match to start or kick users\n"+message;
   }
   if (false !== rsQueInfo.kickTime) {
     var tillKick = Math.round((extraKickTime + rsQueInfo.kickTime - Date.now()) / 1000, 0);
     if (0 < tillKick) {
-      message += ` **${tillKick}**s until you can kick unready players.`
+      message += ` **${tillKick}**s until you can kick unready players`
     } else {
-      message += ` You may **kick** players now using !redstar kick.`
+      message += ` You may **kick** players now using _!redstar kick_`
     }
   }
   action_send(client, userIDs, message, targetUserID);
@@ -188,7 +188,7 @@ function action_send(client, userIDs, message, targetUserID) {
   if (!Array.isArray(userIDs)) {
       client.logger.error("action_send recieved a non-array value "+userIDs);
   }
-  client.logger.error("sending: "+message);
+  //client.logger.error("sending: "+message); // Debug
   userIDs.forEach( (userID) => {
     if (targetUserID && targetUserID === userID) {
       client.fetchUser(userID).then(user => {user.send(message.replace('Someone','You'))});
