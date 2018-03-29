@@ -68,6 +68,9 @@ exports.run = async (client, message, args, level) => {
       case 'o':
         action = 'leave';
         break;
+      case 'talk':
+        action = 'talk';
+        break;
       default:
         action = 'join';
         break;
@@ -112,6 +115,7 @@ exports.run = async (client, message, args, level) => {
 const MATCH_MAX = 5;
 const MATCH_MIN = 4;
 const MATCH_KICK = 120 * 1000;
+const MATCH_KICK_EXTRA = MATCH_KICK;
 
 function action_status(client, userID, rsQueName, message) {
   if (message) {
@@ -255,7 +259,7 @@ function action_join(client, userID, rsQueName) {
   client.logger.error("About to set " + 'userQue'+userID);
   client.redstarQue.set('userQue'+userID, {rsQueName:rsQueName, ready: false});
   rsQueInfo.users.push(userID);
-  if (rsQueInfo.users.length >= (1+1) && !rsQueInfo.kickTime) {
+  if (rsQueInfo.users.length >= MATCH_MIN && !rsQueInfo.kickTime) {
     rsQueInfo.kickTime = Date.now() + MATCH_KICK;
   } else {
     rsQueInfo.kickTime = false;
@@ -334,8 +338,8 @@ function action_kick(client, userID) {
       inCurrentMatch = true;
     }
   });
-  if (!inCurrentMatch && (0 - MATCH_KICK) < timeTillKick) {
-    client.fetchUser(userID).then(user => {user.send("You are not in the current RS"+rsQueName+" match so cannot kick people yet. Please wait another "+((timeTillKick + 120000)/1000)+" seconds.")});
+  if (!inCurrentMatch && (0 - MATCH_KICK_EXTRA) < timeTillKick) {
+    client.fetchUser(userID).then(user => {user.send("You are not in the current RS"+rsQueName+" match so cannot kick people yet. Please wait another "+Math.round((timeTillKick + MATCH_KICK_EXTRA)/1000,0)+" seconds.")});
     return true;
   }
   rsQueInfo.kickTime = false;
@@ -368,11 +372,7 @@ function action_talk(client, userID, args) {
     action_join(client, userID, rsQueName);
     return true;
   }
-  if (MATCH_MAX < quePosition) {
-    
-  } else {
-  }
-  
+  return action_send(client, userID, "User(#"+quePosition+"): "+args.join(' '), rsQueInfo.users);
 }
 
 exports.conf = {
