@@ -112,8 +112,8 @@ exports.run = async (client, message, args, level) => {
   } 
 };
 
-const MATCH_MAX = 5;
-const MATCH_MIN = 4;
+const MATCH_MAX = 2;
+const MATCH_MIN = 1;
 const MATCH_KICK = 120 * 1000;
 const MATCH_KICK_EXTRA = MATCH_KICK;
 
@@ -171,7 +171,11 @@ function action_status(client, userID, rsQueName, message) {
   }
   if (false !== rsQueInfo.kickTime) {
     var tillKick = Math.round((extraKickTime + rsQueInfo.kickTime - Date.now()) / 1000, 0);
-    message += ` **${tillKick}**s until you can kick unready players.`
+    if (0 < tillKick) {
+      message += ` **${tillKick}**s until you can kick unready players.`
+    } else {
+      message += ` You may **kick** players now using !redstar kick.`
+    }
   }
   action_send(client, userIDs, message, targetUserID);
   if (readyNum >= userNum && readyNum >= MATCH_MIN) {
