@@ -113,7 +113,7 @@ exports.run = async (client, message, args, level) => {
 };
 
 const MATCH_MAX = 5;
-const MATCH_MIN = 2;
+const MATCH_MIN = 3;
 const MATCH_KICK = 120 * 1000;
 const MATCH_KICK_EXTRA = MATCH_KICK;
 
@@ -389,7 +389,7 @@ exports.conf = {
 exports.help = {
   name: "redstar",
   category: "Hades Star",
-  description: "Joins a cross-server que for a redstar level that communicate through DM. The que starts counting down as soon as all users are ready. If there are "+MATCH_MAX+" users in the que, the option to kick AFK/unready player becomes available after 2 minutes.\n"+
+  description: "Joins a cross-server que for a redstar level that communicate through DM. The que starts counting down as soon as all users are ready. If there are "+MATCH_MIN+" users in the que, the option to kick AFK/unready player becomes available after 2 minutes.\n"+
     "  Example: redstar 6 (Joins the RS6 que)\n"+
     "  Example: redstar status (View the current que status)\n"+
     "  Example: redstar leave (Leave the que)\n"+
